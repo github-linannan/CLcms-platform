@@ -1,0 +1,80 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>商品类型列表</title>
+</head>
+<body>
+<nav class="breadcrumb information"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商品管理 <span class="c-gray en">&gt;</span> 商品列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c  search">
+		<input type="text" name="goodsName" id="" placeholder="商品名" style="width:250px" class="input-text">
+		<label for="" style="margin-left: 20px">状态：</label>
+		<span class="select-box inline">
+				<select name="goodsStatus" class="select">
+					<option value="">全部</option>
+					<option value="0">上架</option>
+					<option value="-1">下架</option>
+				</select>
+			</span>
+		<label for="" style="margin-left: 20px">商品类型：</label>
+		<span class="select-box inline">
+				<select name="goodsTypeId" class="select">
+					<option value="">全部</option>
+				</select>
+			</span>
+		<button name="" id="productbtSearch" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+		<button name="" id="productbtCanner" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i>清空</button>
+		<span><a class="btn btn-primary radius" data-title="新增 " data-href="product-add.html" onclick="product_edit('新增 ','product-add.html','')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 新增 </a></span>
+	</div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+			<thead>
+				<tr class="text-c">
+					<th>商品ID</th>
+					<th >商品名称</th>
+					<th>商品图片</th>
+					<th >商品原价</th>
+					<th>商品折扣</th>
+					<th >折后价</th>
+					<th >商品库存</th>
+					<th >商品分类</th>
+					<th >状态</th>
+					<th width="120">操作</th>
+				</tr>
+			</thead>
+			
+		</table>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="lib/common/utils.js"></script> 
+<script type="text/javascript" src="js/product/product-list.js"></script>
+</body>
+</html>

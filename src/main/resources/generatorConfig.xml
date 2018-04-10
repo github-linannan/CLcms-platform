@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+ "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+        location="D:/mvn/repo/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar" />
+    <context id="context1" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://10.10.7.3:3306/healthplatform"
+            userId="root" password="123456" />
+        <javaModelGenerator targetPackage="com.letu.healthplatform.platformmanage.report.model"
+            targetProject="D:/work/work/platform/platform-manage/src/main/java" />
+        <sqlMapGenerator targetPackage="mappings"
+            targetProject="D:/work/work/platform/platform-manage/src/main/resources" />
+        <javaClientGenerator targetPackage="com.letu.healthplatform.platformmanage.report.mapper"
+            targetProject="D:/work/work/platform/platform-manage/src/main/java" type="XMLMAPPER" />
+  <!-- 
+        <table schema="CL_DEMO" tableName="t_m_banner" domainObjectName="ProductBanner"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> 
+       <table schema="CL_DEMO" tableName="t_m_package" domainObjectName="ProductPackage"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" />
+             
+                 <table schema="CL_DEMO" tableName="t_m_information_type" domainObjectName="InformationType"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> -->
+<!--      <table schema="CL_DEMO" tableName="t_sample_report" domainObjectName="SampleReport"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> -->
+     <table schema="CL_DEMO" tableName="t_sort_message" domainObjectName="SortMessage"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" />
+<!--      <table schema="CL_DEMO" tableName="t_sale_mail" domainObjectName="SaleMail"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> -->
+<!--      <table schema="CL_DEMO" tableName="t_user_info" domainObjectName="AppUserInfo"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> -->
+     <!-- <table schema="CL_DEMO" tableName="t_m_video_type" domainObjectName="VideoType"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" />
+ -->        <!--   <table schema="CL_DEMO" tableName="t_user_info" domainObjectName="UserInfo"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" />
+         <table schema="CL_DEMO" tableName="t_user_type" domainObjectName="UserType"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> 
+          <table schema="CL_DEMO" tableName="t_province" domainObjectName="Province"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> 
+               
+         <table schema="CL_DEMO" tableName="t_receive_address" domainObjectName="ReceiveAddress"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" />    -->   
+            
+    <!--     <table schema="CL_DEMO" tableName="t_goods" domainObjectName="Goods"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" />
+         <table schema="CL_DEMO" tableName="t_goods_type" domainObjectName="GoodsType"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> 
+         <table schema="CL_DEMO" tableName="t_goods_info" domainObjectName="GoodsInfo"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" />  -->
+     <!--  <table schema="CL_DEMO" tableName="t_order" domainObjectName="Order"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" /> 
+         <table schema="CL_DEMO" tableName="t_order_info" domainObjectName="OrderInfo"   enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+            enableSelectByExample="false" selectByExampleQueryId="false" />  -->
+       
+    </context>
+</generatorConfiguration>

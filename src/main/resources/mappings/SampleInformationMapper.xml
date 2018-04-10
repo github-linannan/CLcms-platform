@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.report.mapper.SampleInformationMapper" >
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.report.model.SampleInformation" >
+    <id column="t_si_id" property="tSiId" jdbcType="INTEGER" />
+    <result column="t_si_sample_batch" property="tSiSampleBatch" jdbcType="VARCHAR" />
+    <result column="t_si_create_date" property="tSiCreatedate" jdbcType="TIMESTAMP" />
+    <result column="t_si_number" property="tSiNumber" jdbcType="VARCHAR" />
+    <result column="t_si_area" property="tSiArea" jdbcType="VARCHAR" />
+    <result column="t_si_create_time" property="tSiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="t_si_create_by" property="tSiCreateBy" jdbcType="VARCHAR" />
+    <result column="t_si_modify_time" property="tSiModifyTime" jdbcType="TIMESTAMP" />
+    <result column="t_si_modify_by" property="tSiModifyBy" jdbcType="VARCHAR" />
+    <result column="t_si_remark" property="tSiRemark" jdbcType="VARCHAR" />
+    <result column="t_si_label" property="tSiLabel" jdbcType="INTEGER" />
+    <result column="t_si_source" property="tSiSource" jdbcType="VARCHAR" />
+    <result column="t_si_item" property="tSiItem" jdbcType="VARCHAR" />
+    <result column="t_sale_id" property="tSaleId" jdbcType="INTEGER" />
+    <result column="t_user_id" property="tUserId" jdbcType="INTEGER" />
+    <result column="t_recive_user_id" property="tReciveUserId" jdbcType="INTEGER" />
+    
+  </resultMap>
+  
+  
+  <resultMap id="BaseResultVO" type="com.letu.healthplatform.platformmanage.report.vo.SampleInformationVo" >
+    <id column="t_si_id" property="tSiId" jdbcType="INTEGER" />
+    <result column="t_si_sample_batch" property="tSiSampleBatch" jdbcType="VARCHAR" />
+    <result column="t_si_create_date" property="tSiCreatedate" jdbcType="TIMESTAMP" />
+    <result column="t_si_number" property="tSiNumber" jdbcType="VARCHAR" />
+    <result column="t_si_area" property="tSiArea" jdbcType="VARCHAR" />
+    <result column="t_si_create_time" property="tSiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="t_si_create_by" property="tSiCreateBy" jdbcType="VARCHAR" />
+    <result column="t_si_modify_time" property="tSiModifyTime" jdbcType="TIMESTAMP" />
+    <result column="t_si_modify_by" property="tSiModifyBy" jdbcType="VARCHAR" />
+    <result column="t_si_remark" property="tSiRemark" jdbcType="VARCHAR" />
+    <result column="t_si_label" property="tSiLabel" jdbcType="INTEGER" />
+    <result column="t_si_source" property="tSiSource" jdbcType="VARCHAR" />
+    <result column="t_si_item" property="tSiItem" jdbcType="VARCHAR" />
+    <result column="t_sale_id" property="tSaleId" jdbcType="INTEGER" />
+    <result column="t_user_id" property="tUserId" jdbcType="INTEGER" />
+    <result column="t_user_name" property="saleName" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="t_recive_user_id" property="tReciveUserId" jdbcType="INTEGER" />
+    <result column="recive_ueser_name" property="reciveUeserName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    t_si_id, t_si_sample_batch, t_si_create_date, t_si_number, t_si_area, t_si_create_time, 
+    t_si_create_by, t_si_modify_time, t_si_modify_by, t_si_remark, t_si_label, t_si_source, 
+    t_si_item, t_sale_id, t_user_id,t_recive_user_id
+  </sql>
+  
+    <select id="selectByParam" resultMap="BaseResultVO" parameterType="com.letu.healthplatform.platformmanage.report.vo.SampleInformationVo" >
+	   SELECT 
+	          tsi.t_si_id, 
+	          tsi.t_si_sample_batch, 
+	          tsi.t_si_create_date,
+	          tsi.t_si_number,
+	          tsi.t_si_area,
+	          tsi.t_si_create_time, 
+	          tsi.t_si_create_by, 
+	          tsi.t_si_modify_time, 
+	          tsi.t_si_modify_by, 
+	          tsi.t_si_remark, 
+	          tsi.t_si_label, 
+	          tsi.t_si_source, 
+	          tsi.t_si_item, 
+	          tsi.t_sale_id, 
+	          tsi.t_user_id,
+	          tsi.t_recive_user_id,
+	          tm.t_user_name,
+	          tu.user_name,
+	          tur.user_name as recive_ueser_name
+		 FROM t_sample_information tsi 
+	          LEFT JOIN t_m_login tm ON tm.t_id = tsi.t_sale_id
+	          LEFT JOIN  t_user tu ON  tu.user_id = tsi.t_user_id 
+	          LEFT JOIN t_user tur on tur.user_id =tsi.t_recive_user_id 
+	          WHERE  1=1
+	          <if test="tSiSampleBatch!=null and tSiSampleBatch!='' ">
+	            and tsi.t_si_sample_batch like CONCAT('%', #{tSiSampleBatch}, '%')
+	          </if>
+	           <if test="saleName!=null and saleName!=''  ">
+	            and  tm.t_user_name like CONCAT('%', #{saleName}, '%')
+	          </if>
+	           <if test="tSiNumber!=null and  tSiNumber!='' ">
+	             and  tsi.t_si_number  like  ONCAT('%', #{tSiNumber}, '%')
+	          </if>
+	          
+	           ORDER BY tsi.t_si_create_time DESC
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+       <include refid="Base_Column_List" />
+      from t_sample_information
+        where  
+        t_si_id = #{tSiId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sample_information
+    where t_si_id = #{tSiId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.report.model.SampleInformation" >
+     insert into t_sample_information (t_si_id, t_si_sample_batch, t_si_create_date, 
+      t_si_number, t_si_area, t_si_create_time, 
+      t_si_create_by, t_si_modify_time, t_si_modify_by, 
+      t_si_remark, t_si_label, t_si_source, 
+      t_si_item, t_sale_id, t_user_id,t_recive_user_id
+      )
+    values (#{tSiId,jdbcType=INTEGER}, #{tSiSampleBatch,jdbcType=VARCHAR}, #{tSiCreatedate,jdbcType=TIMESTAMP}, 
+      #{tSiNumber,jdbcType=VARCHAR}, #{tSiArea,jdbcType=VARCHAR}, #{tSiCreateTime,jdbcType=TIMESTAMP}, 
+      #{tSiCreateBy,jdbcType=VARCHAR}, #{tSiModifyTime,jdbcType=TIMESTAMP}, #{tSiModifyBy,jdbcType=VARCHAR}, 
+      #{tSiRemark,jdbcType=VARCHAR}, #{tSiLabel,jdbcType=BIT}, #{tSiSource,jdbcType=VARCHAR}, 
+      #{tSiItem,jdbcType=VARCHAR}, #{tSaleId,jdbcType=INTEGER}, #{tUserId,jdbcType=INTEGER},
+      #{tReciveUserId,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <insert id="insertSelective"
+   keyProperty="tSiId" useGeneratedKeys="true"
+   parameterType="com.letu.healthplatform.platformmanage.report.model.SampleInformation" >
+    insert into t_sample_information
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tSiId != null" >
+        t_si_id,
+      </if>
+      <if test="tSiSampleBatch != null" >
+        t_si_sample_batch,
+      </if>
+      <if test="tSiCreatedate != null" >
+        t_si_create_date,
+      </if>
+      <if test="tSiNumber != null" >
+        t_si_number,
+      </if>
+      <if test="tSiArea != null" >
+        t_si_area,
+      </if>
+      <if test="tSiCreateTime != null" >
+        t_si_create_time,
+      </if>
+      <if test="tSiCreateBy != null" >
+        t_si_create_by,
+      </if>
+      <if test="tSiModifyTime != null" >
+        t_si_modify_time,
+      </if>
+      <if test="tSiModifyBy != null" >
+        t_si_modify_by,
+      </if>
+      <if test="tSiRemark != null" >
+        t_si_remark,
+      </if>
+      <if test="tSiLabel != null" >
+        t_si_label,
+      </if>
+      <if test="tSiSource != null" >
+        t_si_source,
+      </if>
+      <if test="tSiItem != null" >
+        t_si_item,
+      </if>
+      <if test="tSaleId != null" >
+        t_sale_id,
+      </if>
+      <if test="tUserId != null" >
+        t_user_id,
+      </if>
+       <if test="tReciveUserId != null" >
+          t_recive_user_id,
+       </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tSiId != null" >
+        #{tSiId,jdbcType=INTEGER},
+      </if>
+      <if test="tSiSampleBatch != null" >
+        #{tSiSampleBatch,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiCreatedate != null" >
+        #{tSiCreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tSiNumber != null" >
+        #{tSiNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiArea != null" >
+        #{tSiArea,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiCreateTime != null" >
+        #{tSiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tSiCreateBy != null" >
+        #{tSiCreateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiModifyTime != null" >
+        #{tSiModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tSiModifyBy != null" >
+        #{tSiModifyBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiRemark != null" >
+        #{tSiRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiLabel != null" >
+        #{tSiLabel,jdbcType=BIT},
+      </if>
+      <if test="tSiSource != null" >
+        #{tSiSource,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiItem != null" >
+        #{tSiItem,jdbcType=VARCHAR},
+      </if>
+      <if test="tSaleId != null" >
+        #{tSaleId,jdbcType=INTEGER},
+      </if>
+      <if test="tUserId != null" >
+        #{tUserId,jdbcType=INTEGER},
+      </if>
+      <if test="tReciveUserId != null" >
+        #{tReciveUserId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.report.model.SampleInformation" >
+    update t_sample_information
+    <set >
+      <if test="tSiSampleBatch != null" >
+        t_si_sample_batch = #{tSiSampleBatch,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiCreatedate != null" >
+        t_si_create_date = #{tSiCreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tSiNumber != null" >
+        t_si_number = #{tSiNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiArea != null" >
+        t_si_area = #{tSiArea,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiCreateTime != null" >
+        t_si_create_time = #{tSiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tSiCreateBy != null" >
+        t_si_create_by = #{tSiCreateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiModifyTime != null" >
+        t_si_modify_time = #{tSiModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tSiModifyBy != null" >
+        t_si_modify_by = #{tSiModifyBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiRemark != null" >
+        t_si_remark = #{tSiRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiLabel != null" >
+        t_si_label = #{tSiLabel,jdbcType=BIT},
+      </if>
+      <if test="tSiSource != null" >
+        t_si_source = #{tSiSource,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiItem != null" >
+        t_si_item = #{tSiItem,jdbcType=VARCHAR},
+      </if>
+      <if test="tSaleId != null" >
+        t_sale_id = #{tSaleId,jdbcType=INTEGER},
+      </if>
+      <if test="tUserId != null" >
+        t_user_id = #{tUserId,jdbcType=INTEGER},
+      </if>
+       <if test="tReciveUserId != null" >
+       	  t_recive_user_id= #{tReciveUserId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where t_si_id = #{tSiId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.report.model.SampleInformation" >
+    update t_sample_information
+    set t_si_sample_batch = #{tSiSampleBatch,jdbcType=VARCHAR},
+      t_si_create_date = #{tSiCreatedate,jdbcType=TIMESTAMP},
+      t_si_number = #{tSiNumber,jdbcType=VARCHAR},
+      t_si_area = #{tSiArea,jdbcType=VARCHAR},
+      t_si_create_time = #{tSiCreateTime,jdbcType=TIMESTAMP},
+      t_si_create_by = #{tSiCreateBy,jdbcType=VARCHAR},
+      t_si_modify_time = #{tSiModifyTime,jdbcType=TIMESTAMP},
+      t_si_modify_by = #{tSiModifyBy,jdbcType=VARCHAR},
+      t_si_remark = #{tSiRemark,jdbcType=VARCHAR},
+      t_si_label = #{tSiLabel,jdbcType=BIT},
+      t_si_source = #{tSiSource,jdbcType=VARCHAR},
+      t_si_item = #{tSiItem,jdbcType=VARCHAR},
+      t_sale_id = #{tSaleId,jdbcType=INTEGER},
+      t_user_id = #{tUserId,jdbcType=INTEGER},
+      t_recive_user_id= #{tReciveUserId,jdbcType=INTEGER}
+    where t_si_id = #{tSiId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

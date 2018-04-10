@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="common/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+test
+<input type="button" value="新增"/>
+<div style="margin: auto;">
+    <button>1</button>
+    <button>2</button>
+</div>
+<select name="aaa" id="">
+    <option value="">请选择</option>
+    <option value="1">1111</option>
+    <option value="2">222</option>
+</select>
+
+<input type = "text" value = "" class="Wdate"  onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+
+</body>
+<script src="lib/jquery/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<script language="javascript" type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $("[name=aaa]").on("click",function () {
+        var a= $("[name=aaa]").val();
+        console.log(a);
+    })
+
+    $ ('#datetimepicker').datetimepicker ({
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format:'yyyy-mm-dd hh：ii'
+    });
+</script>
+</html>

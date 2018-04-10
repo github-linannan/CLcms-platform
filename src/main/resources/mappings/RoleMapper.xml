@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.sys.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.sys.model.Role" >
+    <id column="t_id" property="tId" jdbcType="INTEGER" />
+    <result column="t_role_name" property="tRoleName" jdbcType="VARCHAR" />
+    <result column="t_create_time" property="tCreateTime" jdbcType="TIMESTAMP" />
+    <result column="t_remark" property="tRemark" jdbcType="VARCHAR" />
+    <result column="t_status" property="tStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t_id, t_role_name, t_create_time, t_remark, t_status
+  </sql>
+  
+  
+    <select id="selectByParam" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+       <include refid="Base_Column_List" />
+    from t_m_role
+      where  1=1 
+       <if test="tRoleName!=null and tRoleName!='' ">
+       			and t_role_name like concat('%',#{tRoleName},'%')
+       </if>
+        <if test="tStatus !=null">
+	           and t_status =#{tStatus,jdbcType=INTEGER}
+	    </if>
+       
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_m_role
+    where t_id = #{tId,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+   <delete id="deleteByPrimaryKey" >
+    delete from t_m_role 
+    where t_id  in 
+         <foreach item="item" index="index" collection="array" 
+                open="(" separator="," close=")">
+               #{item}
+         </foreach>
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.sys.model.Role" >
+    insert into t_m_role (t_id, t_role_name, t_create_time, 
+      t_remark, t_status)
+    values (#{tId,jdbcType=INTEGER}, #{tRoleName,jdbcType=VARCHAR}, #{tCreateTime,jdbcType=TIMESTAMP}, 
+      #{tRemark,jdbcType=VARCHAR}, #{tStatus,jdbcType=INTEGER})
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Role" >
+    insert into t_m_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="tRoleName != null" >
+        t_role_name,
+      </if>
+      <if test="tCreateTime != null" >
+        t_create_time,
+      </if>
+      <if test="tRemark != null" >
+        t_remark,
+      </if>
+      <if test="tStatus != null" >
+        t_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="tRoleName != null" >
+        #{tRoleName,jdbcType=VARCHAR},
+      </if>
+      <if test="tCreateTime != null" >
+        #{tCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tRemark != null" >
+        #{tRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="tStatus != null" >
+        #{tStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Role" >
+    update t_m_role
+    <set >
+      <if test="tRoleName != null" >
+        t_role_name = #{tRoleName,jdbcType=VARCHAR},
+      </if>
+      <if test="tCreateTime != null" >
+        t_create_time = #{tCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tRemark != null" >
+        t_remark = #{tRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="tStatus != null" >
+        t_status = #{tStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.sys.model.Role" >
+    update t_m_role
+    set t_role_name = #{tRoleName,jdbcType=VARCHAR},
+      t_create_time = #{tCreateTime,jdbcType=TIMESTAMP},
+      t_remark = #{tRemark,jdbcType=VARCHAR},
+      t_status = #{tStatus,jdbcType=INTEGER}
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  
+  
+    <update id="updateByStatus"  parameterType="map">
+	   	 update t_m_role set
+		        t_status = #{tStatus,jdbcType=INTEGER}
+		     where t_id in
+		       <foreach item="item" index="index" collection="list" 
+		                open="(" separator="," close=")">
+		               #{item}
+		         </foreach>
+  </update>
+  
+</mapper>

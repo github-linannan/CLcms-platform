@@ -1,0 +1,161 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico" >
+	<link rel="Shortcut Icon" href="/favicon.ico" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5shiv.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<script type="text/javascript" src="lib/selectivizr.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="lib/jquery.treegrid/jquery.treegrid.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+
+	<title>新增资源</title>
+	<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+	<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-menu-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>菜单名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="hidden" class="input-text" value=""  name="tMenuId">
+				<input type="text" class="input-text" value="" placeholder="请输入菜单名称" name="tMenuName">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">菜单路径：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请输入菜单路径"  name="tMenuUrl">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">父级：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				   <div class="input-text tree-select-parent">
+					   <div class="tree-select-top">
+					   <span class="tree-select-text"></span><img src="lib/jquery.treegrid/img/collapse.png" class="tree-select-right">
+						   <input type="hidden" name="tMenuParentid" value="0">
+					   </div>
+					   <div class="tree-select-cont">
+                            <ul class="tree-list-ul">
+								<!--<li class="tree-list-parent"><div class="tree-list-li"><img src="lib/jquery.treegrid/img/collapse.png"><span>首页</span></div>
+									<ul class="tree-list-child">
+										<li class="tree-list-li"><span>首页1</span></li>
+										<li class="tree-list-li"><span>首页2</span></li>
+										<li class="tree-list-li"><span>首页3</span></li>
+									</ul>
+								</li>
+								<li class="tree-list-parent"><div class="tree-list-li"><img src="lib/jquery.treegrid/img/collapse.png"><span>后台管理</span></div>
+									<ul class="tree-list-child">
+										<li class="tree-list-li"><span>后台管理1</span></li>
+										<li class="tree-list-li"><span>后台管理2</span></li>
+										<li class="tree-list-li"><span>后台管理3</span></li>
+									</ul>
+								</li>
+								<li class="tree-list-parent"><div class="tree-list-li"><img src="lib/jquery.treegrid/img/collapse.png"><span>订单管理</span></div>
+									<ul class="tree-list-child">
+										<li class="tree-list-li"><span>订单管理1</span></li>
+										<li class="tree-list-li"><span>订单管理2</span></li>
+										<li class="tree-list-li"><span>订单管理3</span></li>
+									</ul>
+								</li>-->
+							</ul>
+						   <div class="tree-select-close">
+							   <i class="Hui-iconfont">&#xe60b;</i>
+						   </div>
+					   </div>
+
+			</div>
+		</div>
+		</div>
+		<div class="row cl" id="menu-icon">
+			<label class="form-label col-xs-4 col-sm-2">菜单图标：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<div class="input-text tree-select-parent">
+					<div class="tree-select-top">
+						<span class="tree-select-icon"></span>
+						<img src="lib/jquery.treegrid/img/collapse.png" class="tree-select-right">
+						<input type="hidden" name="tMenuType" value="0">
+					</div>
+					<div class="tree-select-cont">
+						<ul class="tree-list-icon">
+							<li><i class="Hui-iconfont" data="e613">&#xe613;</i></li>
+							<li><i class="Hui-iconfont" data="e616">&#xe616;</i></li>
+							<li><i class="Hui-iconfont" data="e620">&#xe620;</i></li>
+							<li><i class="Hui-iconfont" data="e622">&#xe622;</i></li>
+							<li><i class="Hui-iconfont" data="e62d">&#xe62d;</i></li>
+							<li><i class="Hui-iconfont" data="e60d">&#xe60d;</i></li>
+							<li><i class="Hui-iconfont" data="e627">&#xe627;</i></li>
+							<li><i class="Hui-iconfont" data="e61d">&#xe61d;</i></li>
+							<li><i class="Hui-iconfont" data="e686">&#xe686;</i></li>
+							<li><i class="Hui-iconfont" data="e61c">&#xe61c;</i></li>
+							<li><i class="Hui-iconfont" data="e62e">&#xe62e;</i></li>
+						</ul>
+						<div class="tree-select-close">
+							<i class="Hui-iconfont">&#xe60b;</i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">状态：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<select name="tMenuStatus" class="select">
+					<option value="1">启用</option>
+					<option value="-1">禁用</option>
+				</select>
+
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>排序：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请输入排序"  name="tMenuOrdernum">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button class="btn btn-secondary radius" type="submit"><i class="Hui-iconfont" id="menu-save">&#xe632;</i> 提交</button>
+				<button onClick="menu_cancel();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="lib/common/utils.js"></script>
+<script type="text/javascript" src="js/sys/menu-add.js"></script>
+
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

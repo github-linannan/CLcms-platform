@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.sys.mapper.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.sys.model.Menu">
+    <id column="t_menu_id" jdbcType="INTEGER" property="tMenuId" />
+    <result column="t_menu_parentid" jdbcType="INTEGER" property="tMenuParentid" />
+    <result column="t_menu_url" jdbcType="VARCHAR" property="tMenuUrl" />
+    <result column="t_menu_name" jdbcType="VARCHAR" property="tMenuName" />
+    <result column="t_menu_orderNum" jdbcType="INTEGER" property="tMenuOrdernum" />
+    <result column="t_menu_type" jdbcType="VARCHAR" property="tMenuType" />
+    <result column="t_menu_status" jdbcType="INTEGER" property="tMenuStatus" />
+    
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    t_menu_id, t_menu_parentid, t_menu_url, t_menu_name, t_menu_orderNum, t_menu_type,t_menu_status
+  </sql>
+  
+   <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.sys.model.Menu" >
+    select 
+    <include refid="Base_Column_List" />
+         from t_m_menu   order by t_menu_parentid , t_menu_orderNum asc  
+  </select>
+  
+  
+  
+   <select id="selectByLogin" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+         SELECT  
+              menu.t_menu_id, 
+              menu.t_menu_parentid,
+              menu.t_menu_url, 
+              menu.t_menu_name, 
+              menu.t_menu_orderNum, 
+              menu.t_menu_type ,
+              menu.t_menu_status  
+        FROM  t_m_menu menu  
+			WHERE menu.t_menu_id IN  (
+				 SELECT  rm.t_menu_id 
+				     FROM  t_m_login  login,
+					 t_login_role lr ,
+					 t_role_menu  rm 
+				WHERE  login.t_id = lr.t_login_id 
+			          AND lr.t_role_id = rm.t_role_id
+			          AND login.t_id =  #{loginId,jdbcType=INTEGER}
+			 )
+			 <!-- 菜单启用状态 -->
+			 and menu.t_menu_status =1  
+           order by menu.t_menu_parentid , menu.t_menu_orderNum asc 
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_m_menu
+    where t_menu_id = #{tMenuId,jdbcType=INTEGER}
+  </select>
+  
+  
+    <delete id="deleteByPrimaryKey" >
+    delete from t_m_menu 
+    where tMenuId  in 
+         <foreach item="item" index="index" collection="array" 
+                open="(" separator="," close=")">
+               #{item}
+         </foreach>
+  </delete>
+  
+  
+   <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.sys.model.Menu">
+    insert into t_m_menu (t_menu_id, t_menu_parentid, t_menu_url, 
+      t_menu_name, t_menu_orderNum, t_menu_type,t_menu_status
+      )
+    values (#{tMenuId,jdbcType=INTEGER}, #{tMenuParentid,jdbcType=INTEGER}, #{tMenuUrl,jdbcType=VARCHAR}, 
+      #{tMenuName,jdbcType=VARCHAR}, #{tMenuOrdernum,jdbcType=INTEGER}, #{tMenuType,jdbcType=VARCHAR},
+       #{tMenuStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Menu">
+    insert into t_m_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tMenuId != null">
+        t_menu_id,
+      </if>
+      <if test="tMenuParentid != null">
+        t_menu_parentid,
+      </if>
+      <if test="tMenuUrl != null">
+        t_menu_url,
+      </if>
+      <if test="tMenuName != null">
+        t_menu_name,
+      </if>
+      <if test="tMenuOrdernum != null">
+        t_menu_orderNum,
+      </if>
+      <if test="tMenuType != null">
+        t_menu_type,
+      </if>
+       <if test="tMenuStatus!=null">
+       	t_menu_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tMenuId != null">
+        #{tMenuId,jdbcType=INTEGER},
+      </if>
+      <if test="tMenuParentid != null">
+        #{tMenuParentid,jdbcType=INTEGER},
+      </if>
+      <if test="tMenuUrl != null">
+        #{tMenuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tMenuName != null">
+        #{tMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="tMenuOrdernum != null">
+        #{tMenuOrdernum,jdbcType=INTEGER},
+      </if>
+      <if test="tMenuType != null">
+        #{tMenuType,jdbcType=VARCHAR},
+      </if>
+      <if test="tMenuStatus!=null">
+       	#{tMenuStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Menu">
+    update t_m_menu
+    <set>
+      <if test="tMenuParentid != null">
+        t_menu_parentid = #{tMenuParentid,jdbcType=INTEGER},
+      </if>
+      <if test="tMenuUrl != null">
+        t_menu_url = #{tMenuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tMenuName != null">
+        t_menu_name = #{tMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="tMenuOrdernum != null">
+        t_menu_orderNum = #{tMenuOrdernum,jdbcType=INTEGER},
+      </if>
+      <if test="tMenuType != null">
+        t_menu_type = #{tMenuType,jdbcType=VARCHAR},
+      </if>
+       <if test="tMenuStatus!=null">
+       	 t_menu_status = #{tMenuStatus,jdbcType=INTEGER},
+      	</if>
+    </set>
+    where t_menu_id = #{tMenuId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.sys.model.Menu">
+    update t_m_menu
+    set t_menu_parentid = #{tMenuParentid,jdbcType=INTEGER},
+      t_menu_url = #{tMenuUrl,jdbcType=VARCHAR},
+      t_menu_name = #{tMenuName,jdbcType=VARCHAR},
+      t_menu_orderNum = #{tMenuOrdernum,jdbcType=INTEGER},
+      t_menu_type = #{tMenuType,jdbcType=VARCHAR},
+      t_menu_status = #{tMenuStatus,jdbcType=INTEGER}
+    where t_menu_id = #{tMenuId,jdbcType=INTEGER}
+  </update>
+ 
+
+  
+</mapper>

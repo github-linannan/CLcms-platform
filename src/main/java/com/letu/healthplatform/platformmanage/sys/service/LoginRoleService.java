@@ -1,0 +1,1 @@
+package com.letu.healthplatform.platformmanage.sys.service;import com.letu.healthplatform.platformmanage.sys.model.LoginRole;public interface LoginRoleService {		Object findLoginRole(String tLoginId);		Object deleteByPrimaryKey(String tLoginId);    Object insertSelective(LoginRole record);        Object insertLoginRoleBatch(LoginRole record);    }

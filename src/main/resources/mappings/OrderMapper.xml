@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letu.healthplatform.platformmanage.order.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.order.model.Order">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_number" jdbcType="CHAR" property="orderNumber" />
+    <result column="login_id" jdbcType="INTEGER" property="loginId" />
+    <result column="order_pay_total_price" jdbcType="DOUBLE" property="orderPayTotalPrice" />
+    <result column="order_status" jdbcType="CHAR" property="orderStatus" />
+    <result column="order_pay_type" jdbcType="VARCHAR" property="orderPayType" />
+    <result column="order_pay_time" jdbcType="TIMESTAMP" property="orderPayTime" />
+    <result column="order_ship_time" jdbcType="TIMESTAMP" property="orderShipTime" />
+    <result column="order_collection_time" jdbcType="TIMESTAMP" property="orderCollectionTime" />
+    <result column="order_ship_type" jdbcType="VARCHAR" property="orderShipType" />
+    <result column="order_ship_number" jdbcType="VARCHAR" property="orderShipNumber" />
+    <result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime" />
+    <result column="order_update_time" jdbcType="TIMESTAMP" property="orderUpdateTime" />
+    <result column="order_ship_address" jdbcType="INTEGER" property="orderShipAddress" />
+    <result column="order_return_ship_address" jdbcType="INTEGER" property="orderReturnShipAddress" />
+    <result column="user_invite" jdbcType="VARCHAR" property="userInvite" />
+    <result column="order_degree" jdbcType="INTEGER" property="orderDegree" />
+    <result column="t_sample_numbers" jdbcType="VARCHAR" property="tSampleNumbers" />
+
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    order_id, order_number, login_id, order_pay_total_price, order_status, order_pay_type, 
+    order_pay_time, order_ship_time, order_collection_time, order_ship_type, 
+    order_ship_number, order_create_time, order_update_time, order_ship_address,
+    order_return_ship_address,
+    user_invite,order_degree
+  </sql>
+  
+  
+  	<!-- 订单详情 -->
+   <select id="selectOrderDetails" parameterType="com.letu.healthplatform.platformmanage.order.model.Order"
+        resultType="map">
+		SELECT
+		tinfo.order_number AS orderNumber,
+		'' AS jcName,
+		login.login_nickname AS loginNickname,
+		login.login_telephone AS loginTelephone ,
+		torder.order_pay_total_price AS orderPayTotalPrice,
+		tinfo.order_particulars AS orderParticulars,
+		torder.order_status AS orderStatus,
+		torder.order_create_time AS orderCreateTime,
+		login.login_invite AS loginInvite,
+		tra.address_info AS addressInfo,
+		tinfo.goods_id AS goodsId,
+		tgoods.goods_name AS goodsName,
+		tinfo.order_goods_num AS orderGoodsNum,
+		tinfo.order_goods_price AS orderGoodsPrice,
+		tinfo.order_goods_discount AS orderGoodsDiscount,
+		tinfo.order_goods_discount_price AS orderGoodsDiscountPrice
+		FROM t_order torder , t_order_info tinfo, t_goods tgoods
+		, t_login login , t_receive_address tra 
+		WHERE 1=1
+		AND tinfo.order_number =torder.order_number
+		AND tinfo.goods_id = tgoods.goods_id
+		AND login.login_id=torder.login_id
+		AND  tra.login_id = login.login_id
+        AND  tra.address_default = 1 
+          
+	 <if test="loginId!=null and loginId !='' ">
+        and torder.login_id=#{loginId}
+     </if>
+      <if test="orderId!=null and orderId != ''">
+        and torder.order_id = #{orderId,jdbcType=INTEGER}
+     </if>
+      <if test="orderNumber!=null and orderNumber != ''">
+        and tinfo.order_number = #{orderNumber}
+     </if>
+     <if test="orderStatus_!=null and orderStatus_!='' ">
+        and torder.order_status  in 
+        <foreach item="item" index="index" collection="orderStatus_" 
+               open="(" separator="," close=")">
+              #{item}
+         </foreach>
+     </if>
+       and torder.order_status!="-9"<!-- 删除的订单不显示 -->
+  </select> 
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  
+   <!-- 发货管理 -->
+   <select id="selectDeliverParam" parameterType="com.letu.healthplatform.platformmanage.order.model.Order" resultType="map">
+	SELECT 
+	      t.order_id  AS orderId,
+	       t.order_number AS orderNumber,
+	       t.order_pay_total_price AS orderPayTotalPrice,
+	       t.order_pay_time  AS orderPayTime,
+	       l.login_nickname AS loginNickname,
+	       l.login_telephone AS loginTelephone,
+	       ra.address_name AS addressName,
+	       ra.address_telephone AS addressTelephone,
+	       ra.address_complete AS addressComplete,
+			t.t_sample_numbers AS tSampleNumbers,
+	        t.order_ship_type AS orderShipType,
+			t.order_ship_number AS orderShipNumber,
+			t.order_status  AS orderStatus,
+			t.order_create_time  AS  orderCreateTime,
+			t.order_ship_time  AS orderShipTime
+	       FROM   t_order   t  
+	              , t_login l 
+	              , t_receive_address ra
+	       WHERE  t.login_id =l.login_id 
+	        AND ra.login_id = l.login_id
+	        AND ra.address_default =1 
+	        and t.order_status!="-9" 
+	        <if test="orderNumber!=null and orderNumber!='' ">
+	           and t.order_number = ${orderNumber}
+	        </if>
+	        <if test="orderShipNumber!=null and orderShipNumber!='' ">
+	           and t.order_ship_number = ${orderShipNumber}
+	        </if>
+	         <if test="loginTelephone!=null and loginTelephone!='' ">
+	           and l.login_telephone = ${loginTelephone}
+	        </if>
+	        <if test="orderStatus!=null and orderStatus!='' ">
+	           and t.order_status  in ( ${orderStatus} )
+	        </if>
+	         <if test="addressTelephone!=null and addressTelephone!='' ">
+	           and ra.address_telephone  = ${addressTelephone}
+	        </if>
+	         ORDER  BY  t.order_pay_time  DESC 
+   </select>
+   
+   
+   
+     <select id="selectDeliverDetails" parameterType="com.letu.healthplatform.platformmanage.order.model.Order" resultType="map">
+		SELECT 
+	       t.order_id  AS orderId,
+	       t.order_number AS orderNumber,
+	       t.order_pay_total_price AS orderPayTotalPrice,
+	       t.order_pay_time  AS orderPayTime,
+	       l.login_nickname AS loginNickname,
+	       l.login_telephone AS loginTelephone,
+	       ra.address_name AS addressName,
+	       ra.address_telephone AS addressTelephone,
+	       ra.address_complete AS addressComplete,
+			t.t_sample_numbers AS tSampleNumbers,
+	        t.order_ship_type AS orderShipType,
+			t.order_ship_number AS orderShipNumber,
+			t.order_status  AS orderStatus,
+			t.order_create_time  AS  orderCreateTime,
+			t.order_pay_type as orderPayType ,
+			t.user_invite  as userInvite,
+			'' as list 
+	       FROM   t_order   t  
+	              , t_login l 
+	              , t_receive_address ra
+	       WHERE  t.login_id =l.login_id 
+	        AND ra.login_id = l.login_id
+	        AND ra.address_default =1 
+	        and t.order_status!="-9" 
+	        and (t.order_status = 1 
+	         or t.order_status = 2)
+	        <if test="orderNumber!=null and orderNumber!='' ">
+	           and t.order_number = ${orderNumber}
+	        </if>
+  	 </select>
+  
+  <!-- 所有订单列表 -->
+   <select id="selectByParam" parameterType="com.letu.healthplatform.platformmanage.order.model.Order" resultType="map">
+    SELECT
+	torder.order_id AS orderId,
+	torder.order_number AS orderNumber ,
+	torder.login_id AS loginId,
+	torder.order_pay_total_price AS orderPayTotalPrice ,
+	torder.order_status AS orderStatus ,
+	torder.order_number AS orderGoodsNum,
+	torder.order_create_time AS orderCreateTime,
+	torder.order_pay_time AS orderPayTime,
+	login.login_nickname AS loginNickname,
+	login.login_telephone AS loginTelephone 
+	FROM t_order torder
+	LEFT JOIN t_login login ON login.login_id=torder.login_id
+	WHERE 1=1 
+     <if test="loginId!=null and loginId!='' ">
+        and torder.login_id=${loginId}
+     </if>
+     <if test="orderStatus_!=null and orderStatus_!='' ">
+        and torder.order_status  in 
+        <foreach item="item" index="index" collection="orderStatus_" 
+               open="(" separator="," close=")">
+              #{item}
+         </foreach>
+     </if>
+      <if test="loginNickname!=null and loginNickname!='' ">
+         and  login.login_nickname like concat('%', #{loginNickname},'%') 
+     </if>
+      and torder.order_status!="-9"
+       ORDER BY torder.order_create_time DESC 
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+ 
+    delete from t_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.order.model.Order" >
+    insert into t_order (order_id, order_number, login_id, 
+      user_invite, order_pay_total_price, order_status, 
+      order_pay_type, order_pay_time, order_ship_time, 
+      order_collection_time, order_ship_type, order_ship_number, 
+      order_create_time, order_update_time, order_ship_address,  order_degree, t_sample_numbers
+      )
+    values (#{orderId,jdbcType=INTEGER}, #{orderNumber,jdbcType=CHAR}, #{loginId,jdbcType=INTEGER}, 
+      #{userInvite,jdbcType=VARCHAR}, #{orderPayTotalPrice,jdbcType=DOUBLE}, #{orderStatus,jdbcType=CHAR}, 
+      #{orderPayType,jdbcType=VARCHAR}, #{orderPayTime,jdbcType=TIMESTAMP}, #{orderShipTime,jdbcType=TIMESTAMP}, 
+      #{orderCollectionTime,jdbcType=TIMESTAMP}, #{orderShipType,jdbcType=VARCHAR}, #{orderShipNumber,jdbcType=VARCHAR}, 
+      #{orderCreateTime,jdbcType=TIMESTAMP}, #{orderUpdateTime,jdbcType=TIMESTAMP}, #{orderShipAddress,jdbcType=INTEGER}, 
+       #{orderDegree,jdbcType=INTEGER}, #{tSampleNumbers,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.order.model.Order" >
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="loginId != null" >
+        login_id,
+      </if>
+      <if test="userInvite != null" >
+        user_invite,
+      </if>
+      <if test="orderPayTotalPrice != null" >
+        order_pay_total_price,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderPayType != null" >
+        order_pay_type,
+      </if>
+      <if test="orderPayTime != null" >
+        order_pay_time,
+      </if>
+      <if test="orderShipTime != null" >
+        order_ship_time,
+      </if>
+      <if test="orderCollectionTime != null" >
+        order_collection_time,
+      </if>
+      <if test="orderShipType != null" >
+        order_ship_type,
+      </if>
+      <if test="orderShipNumber != null" >
+        order_ship_number,
+      </if>
+      <if test="orderCreateTime != null" >
+        order_create_time,
+      </if>
+      <if test="orderUpdateTime != null" >
+        order_update_time,
+      </if>
+      <if test="orderShipAddress != null" >
+        order_ship_address,
+      </if>
+   
+      <if test="orderDegree != null" >
+        order_degree,
+      </if>
+      <if test="tSampleNumbers != null" >
+        t_sample_numbers,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="loginId != null" >
+        #{loginId,jdbcType=INTEGER},
+      </if>
+      <if test="userInvite != null" >
+        #{userInvite,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPayTotalPrice != null" >
+        #{orderPayTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderPayType != null" >
+        #{orderPayType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPayTime != null" >
+        #{orderPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderShipTime != null" >
+        #{orderShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCollectionTime != null" >
+        #{orderCollectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderShipType != null" >
+        #{orderShipType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderShipNumber != null" >
+        #{orderShipNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCreateTime != null" >
+        #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderUpdateTime != null" >
+        #{orderUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderShipAddress != null" >
+        #{orderShipAddress,jdbcType=INTEGER},
+      </if>
+   
+      <if test="orderDegree != null" >
+        #{orderDegree,jdbcType=INTEGER},
+      </if>
+      <if test="tSampleNumbers != null" >
+        #{tSampleNumbers,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.order.model.Order" >
+    update t_order
+    <set >
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=CHAR},
+      </if>
+      <if test="loginId != null" >
+        login_id = #{loginId,jdbcType=INTEGER},
+      </if>
+      <if test="userInvite != null" >
+        user_invite = #{userInvite,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPayTotalPrice != null" >
+        order_pay_total_price = #{orderPayTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderPayType != null" >
+        order_pay_type = #{orderPayType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPayTime != null" >
+        order_pay_time = #{orderPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderShipTime != null" >
+        order_ship_time = #{orderShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCollectionTime != null" >
+        order_collection_time = #{orderCollectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderShipType != null" >
+        order_ship_type = #{orderShipType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderShipNumber != null" >
+        order_ship_number = #{orderShipNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCreateTime != null" >
+        order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderUpdateTime != null" >
+        order_update_time = #{orderUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderShipAddress != null" >
+        order_ship_address = #{orderShipAddress,jdbcType=INTEGER},
+      </if>
+ 
+      <if test="orderDegree != null" >
+        order_degree = #{orderDegree,jdbcType=INTEGER},
+      </if>
+      <if test="tSampleNumbers != null" >
+        t_sample_numbers = #{tSampleNumbers,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.order.model.Order" >
+    update t_order
+    set order_number = #{orderNumber,jdbcType=CHAR},
+      login_id = #{loginId,jdbcType=INTEGER},
+      user_invite = #{userInvite,jdbcType=VARCHAR},
+      order_pay_total_price = #{orderPayTotalPrice,jdbcType=DOUBLE},
+      order_status = #{orderStatus,jdbcType=CHAR},
+      order_pay_type = #{orderPayType,jdbcType=VARCHAR},
+      order_pay_time = #{orderPayTime,jdbcType=TIMESTAMP},
+      order_ship_time = #{orderShipTime,jdbcType=TIMESTAMP},
+      order_collection_time = #{orderCollectionTime,jdbcType=TIMESTAMP},
+      order_ship_type = #{orderShipType,jdbcType=VARCHAR},
+      order_ship_number = #{orderShipNumber,jdbcType=VARCHAR},
+      order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      order_update_time = #{orderUpdateTime,jdbcType=TIMESTAMP},
+      order_ship_address = #{orderShipAddress,jdbcType=INTEGER},
+      order_degree = #{orderDegree,jdbcType=INTEGER},
+      t_sample_numbers = #{tSampleNumbers,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+ 
+ 
+  <update id="udapteorderStatus" parameterType="map">
+    update t_order
+    <set>
+        order_status = #{orderStatus,jdbcType=INTEGER}
+    </set>
+     where orderNumber in 
+       <foreach item="item" index="index" collection="list" 
+               open="(" separator="," close=")">
+              #{item}
+        </foreach>
+  </update>
+  
+  
+  
+    <update id="updateOrderStatus" parameterType="map">
+    update t_order
+    <set>
+        order_status = #{orderStatus,jdbcType=INTEGER}
+    </set>
+     where order_number =#{orderNumber,jdbcType=CHAR}
+  </update>
+  
+ 
+</mapper>

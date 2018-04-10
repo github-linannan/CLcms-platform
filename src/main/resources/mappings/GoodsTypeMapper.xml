@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letu.healthplatform.platformmanage.goods.mapper.GoodsTypeMapper">
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.goods.model.GoodsType">
+    <id column="goodstype_id" jdbcType="INTEGER" property="goodstypeId" />
+    <result column="goodstype_name" jdbcType="VARCHAR" property="goodstypeName" />
+    <result column="goodstype_status" jdbcType="INTEGER" property="goodstypeStatus" />
+    
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    goodstype_id, goodstype_name,goodstype_status
+  </sql>
+  
+  <select id="selectGoodsTypeAll" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsType" resultMap="BaseResultMap">
+    select 
+     <include refid="Base_Column_List" />
+        from t_goods_type  where 1=1 
+        <if test="goodstypeName !=null and goodstypeName !='' ">
+             and   goodstype_name  like  concat('%',#{goodstypeName},'%')
+        </if>
+         <if test="goodstypeStatus !=null ">
+             and   goodstype_status  =#{goodstypeStatus}
+        </if>
+        
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_goods_type
+    where goodstype_id = #{goodstypeId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey"  >
+    delete from t_goods_type
+    where goodstype_id in
+       <foreach item="item" index="index" collection="array" 
+                open="(" separator="," close=")">
+               #{item}
+         </foreach>
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsType">
+    insert into t_goods_type (goodstype_id, goodstype_name)
+    values (#{goodstypeId,jdbcType=INTEGER}, #{goodstypeName,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsType">
+    insert into t_goods_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodstypeId != null">
+        goodstype_id,
+      </if>
+      <if test="goodstypeName != null">
+        goodstype_name,
+      </if>
+       <if test="goodstypeStatus != null">
+        goodstype_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodstypeId != null">
+        #{goodstypeId,jdbcType=INTEGER},
+      </if>
+      <if test="goodstypeName != null">
+        #{goodstypeName,jdbcType=VARCHAR},
+      </if>
+       <if test="goodstypeStatus != null">
+        #{goodstypeStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsType">
+    update t_goods_type
+    <set>
+      <if test="goodstypeName != null">
+        goodstype_name = #{goodstypeName,jdbcType=VARCHAR},
+      </if>
+       <if test="goodstypeStatus != null">
+        goodstype_status = #{goodstypeStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where goodstype_id = #{goodstypeId,jdbcType=INTEGER}
+  </update>
+  
+   <update id="updateByStatus" >
+   	 update t_goods_type set
+	        goodstype_status = -1
+	     where goodstype_id in
+	       <foreach item="item" index="index" collection="array" 
+	                open="(" separator="," close=")">
+	               #{item}
+	         </foreach>
+  </update>
+  
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsType">
+    update t_goods_type
+    set goodstype_name = #{goodstypeName,jdbcType=VARCHAR},
+        goodstype_status = #{goodstypeStatus,jdbcType=INTEGER}
+    where goodstype_id = #{goodstypeId,jdbcType=INTEGER}
+  </update>
+</mapper>

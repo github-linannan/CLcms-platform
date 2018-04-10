@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!-- 文件输出格式 -->
+	<property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />
+	<!-- dev文件路径 -->
+	<property name="DEV_FILE_PATH" value="d:/letu/platformmanage" />
+	<!-- test文件路径 -->
+	<property name="TEST_FILE_PATH" value="d:/letu/platformmanage" />
+	<!-- pro文件路径 -->
+	<property name="PRO_FILE_PATH" value="/letu/platformmanage" />
+	
+	<!--  -->
+
+	<!-- 开发环境 -->
+	<springProfile name="dev">
+		<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+			<encoder>
+				<pattern>${PATTERN}</pattern>
+			</encoder>
+		</appender>
+		<logger name="com.lanwon" level="debug"/>
+	   <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DEV_FILE_PATH}/platform-manage.log</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+				<fileNamePattern>${DEV_FILE_PATH}/logs/platform-manage-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+				<MaxHistory>30</MaxHistory>
+				<maxFileSize>20MB</maxFileSize>
+			</rollingPolicy>
+		   <encoder>
+		     <pattern>${PATTERN}</pattern>
+		   </encoder>
+			
+		</appender>
+		<root level="warn">
+			<appender-ref ref="DEV_FILE" />
+		</root>
+		<root level="info">
+			<appender-ref ref="CONSOLE" />
+		</root>
+	</springProfile>
+
+
+
+	<!-- 测试环境 -->
+	<springProfile name="test">
+		<!-- 每天产生一个文件 -->
+		<appender name="TEST-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<!-- 文件路径 -->
+			<file>${TEST_FILE_PATH}/platform-manage.log</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+				<fileNamePattern>${TEST_FILE_PATH}/logs/platform-manage-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+				<MaxHistory>30</MaxHistory>
+				<maxFileSize>20MB</maxFileSize>
+			</rollingPolicy>
+		   <encoder>
+		     <pattern>${PATTERN}</pattern>
+		   </encoder>
+		</appender>
+		
+		<root level="info">
+			<appender-ref ref="TEST-FILE" />
+		</root>
+	</springProfile>
+  
+
+
+
+	<!-- 生产环境 -->
+	<springProfile name="prod">
+		<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+			<encoder>
+				<pattern>${PATTERN}</pattern>
+			</encoder>
+		</appender>
+		<logger name="com.lanwon" level="debug"/>
+		<appender name="PROD_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${PRO_FILE_PATH}/platform-manage.log</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+				<fileNamePattern>${PRO_FILE_PATH}/logs/platform-manage-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+				<MaxHistory>30</MaxHistory>
+				<maxFileSize>50MB</maxFileSize>
+			</rollingPolicy>
+		   <encoder>
+		     <pattern>${PATTERN}</pattern>
+		   </encoder>
+	
+		</appender>
+		
+		<root level="warn">
+			<appender-ref ref="PROD_FILE" />
+		</root>
+		<root level="info">
+			<appender-ref ref="CONSOLE" />
+		</root>
+	</springProfile>
+	
+	   <!--输出sql语句-->
+    <logger name="com.letu" level="debug" />
+	
+</configuration>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>-->
+    <!--<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>-->
+
+</head>
+<body>
+test
+
+<div style="margin: auto;">
+    <select id="sel_menu3" class="js-data-example-ajax form-control">
+        <option value="" selected="selected">请选择</option>
+    </select>
+    <select id="sel_menu2" class="js-data-example-ajax form-control">
+        <option value="" selected="selected">请选择</option>
+    </select>
+</div>
+<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="lib/common/utils.js" ></script>
+
+<script type="text/javascript" src="js/zy-ajax.js" ></script>
+
+<script type="text/javascript" src="js/select2.min.js"></script>
+<script type="text/javascript" src="js/zh-CN.js"></script>
+<script type="text/javascript">
+    $(function () {
+        /*banner 页面*/
+        var token = MyLocalStorage.Cache.get('token');
+        //url:web_url+ "proBanner/selectByParam",
+        $("#sel_menu3, #sel_menu2").select2({
+            width: '200px',
+            placeholder: '请选择客户',
+            language: "zh-CN",
+            ajax: {
+                url: web_url + "appUser/selectByParam",
+                type: 'get',
+                dataType: 'json',
+                delay: 500,
+                cache: true,
+
+                data: function (params) {
+                    console.log(params);
+                    return {
+                        userName: params.term,
+                        token: token,
+                    };
+                },
+                processResults: function (data, params) {
+                    console.log(data);
+                    var rows = data.data;
+                    for (var i in rows) {
+                        var row = rows[i];
+                        row.id = row.userId;
+                        row.text = row.userName;
+                    }
+                    return {
+                        results: rows
+                    };
+                }
+            },
+            escapeMarkup: function (markup) { return markup; },
+            templateResult: formatRepo,
+            templateSelection: formatRepoSelection
+        });
+
+
+
+    });
+    function formatRepo(repo){
+        console.log(repo);
+        return repo.text
+    }
+    function formatRepoSelection(repo) {
+        console.log(repo);
+        if (repo.loading) return repo.text;
+        var markup = "<div id='"+repo.id+"'>"+repo.text+"</div>";
+        return markup;
+    }
+
+
+
+</script>
+</body>
+
+</html>

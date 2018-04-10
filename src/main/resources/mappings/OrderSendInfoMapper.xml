@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.order.mapper.OrderSendInfoMapper" >
+  
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.order.model.OrderSendInfo" >
+    <id column="order_send_id" property="orderSendId" jdbcType="INTEGER" />
+    <result column="orderInfo_id" property="orderinfoId" jdbcType="VARCHAR" />
+    <result column="order_return_ship_time" property="orderReturnShipTime" jdbcType="TIMESTAMP" />
+    <result column="order_return_ship_type" property="orderReturnShipType" jdbcType="VARCHAR" />
+    <result column="order_return_ship_number" property="orderReturnShipNumber" jdbcType="VARCHAR" />
+    <result column="order_return_address_id" property="orderReturnAddressId" jdbcType="INTEGER" />
+    <result column="order_accpect_ship_time" property="orderAccpectShipTime" jdbcType="TIMESTAMP" />
+    <result column="order_detection_ship_time" property="orderDetectionShipTime" jdbcType="TIMESTAMP" />
+    <result column="order_check_ship_time" property="orderCheckShipTime" jdbcType="TIMESTAMP" />
+    <result column="order_finsh_ship_time" property="orderFinshShipTime" jdbcType="TIMESTAMP" />
+    <result column="order_info_status" property="orderInfoStatus" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+     <result column="t_sample_number" property="tSampleNumber" jdbcType="VARCHAR" />
+    <result column="order_return_create_time" property="orderReturnCreateTime" jdbcType="TIMESTAMP" />
+    <result column="t_si_project" property="tSiProject" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    order_send_id, orderInfo_id, order_return_ship_time, order_return_ship_type, order_return_ship_number, 
+    order_return_address_id, order_accpect_ship_time, order_detection_ship_time, order_check_ship_time, 
+    order_finsh_ship_time, order_info_status, user_id, t_sample_number, order_return_create_time, 
+    t_si_project, order_number
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_send_info
+    where order_send_id = #{orderSendId,jdbcType=INTEGER}
+  </select>
+  
+  
+   <select id="selectByOrderNumber" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderSendInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_send_info
+    where
+     order_number = #{orderNumber,jdbcType=VARCHAR}
+     and order_info_status = #{orderInfoStatus,jdbcType=INTEGER}
+  </select>
+   <select id="selectByOrderNumberAndStatus" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderSendInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_send_info
+    where
+     order_number = #{orderNumber,jdbcType=VARCHAR}
+     and order_info_status &lt; #{orderInfoStatus,jdbcType=INTEGER}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_order_send_info
+    where order_send_id = #{orderSendId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderSendInfo" >
+    insert into t_order_send_info (order_send_id, orderInfo_id, order_return_ship_time, 
+      order_return_ship_type, order_return_ship_number, 
+      order_return_address_id, order_accpect_ship_time, 
+      order_detection_ship_time, order_check_ship_time, 
+      order_finsh_ship_time, order_info_status, 
+     user_id, t_sample_number, order_return_create_time, 
+      t_si_project, order_number
+    values (#{orderSendId,jdbcType=INTEGER}, #{orderinfoId,jdbcType=VARCHAR}, #{orderReturnShipTime,jdbcType=TIMESTAMP}, 
+      #{orderReturnShipType,jdbcType=VARCHAR}, #{orderReturnShipNumber,jdbcType=VARCHAR}, 
+      #{orderReturnAddressId,jdbcType=INTEGER}, #{orderAccpectShipTime,jdbcType=TIMESTAMP}, 
+      #{orderDetectionShipTime,jdbcType=TIMESTAMP}, #{orderCheckShipTime,jdbcType=TIMESTAMP}, 
+      #{orderFinshShipTime,jdbcType=TIMESTAMP}, #{orderInfoStatus,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER}, #{tSampleNumber,jdbcType=VARCHAR}, #{orderReturnCreateTime,jdbcType=TIMESTAMP}, 
+      #{tSiProject,jdbcType=VARCHAR}, #{orderNumber,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderSendInfo" >
+    insert into t_order_send_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderSendId != null" >
+        order_send_id,
+      </if>
+      <if test="orderinfoId != null" >
+        orderInfo_id,
+      </if>
+      <if test="orderReturnShipTime != null" >
+        order_return_ship_time,
+      </if>
+      <if test="orderReturnShipType != null" >
+        order_return_ship_type,
+      </if>
+      <if test="orderReturnShipNumber != null" >
+        order_return_ship_number,
+      </if>
+      <if test="orderReturnAddressId != null" >
+        order_return_address_id,
+      </if>
+      <if test="orderAccpectShipTime != null" >
+        order_accpect_ship_time,
+      </if>
+      <if test="orderDetectionShipTime != null" >
+        order_detection_ship_time,
+      </if>
+      <if test="orderCheckShipTime != null" >
+        order_check_ship_time,
+      </if>
+      <if test="orderFinshShipTime != null" >
+        order_finsh_ship_time,
+      </if>
+      <if test="orderInfoStatus != null" >
+        order_info_status,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="tSampleNumber != null" >
+        t_sample_number,
+      </if>
+      <if test="orderReturnCreateTime != null" >
+        order_return_create_time,
+      </if>
+      <if test="tSiProject != null" >
+        t_si_project,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderSendId != null" >
+        #{orderSendId,jdbcType=INTEGER},
+      </if>
+      <if test="orderinfoId != null" >
+        #{orderinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReturnShipTime != null" >
+        #{orderReturnShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderReturnShipType != null" >
+        #{orderReturnShipType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReturnShipNumber != null" >
+        #{orderReturnShipNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReturnAddressId != null" >
+        #{orderReturnAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="orderAccpectShipTime != null" >
+        #{orderAccpectShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderDetectionShipTime != null" >
+        #{orderDetectionShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCheckShipTime != null" >
+        #{orderCheckShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderFinshShipTime != null" >
+        #{orderFinshShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderInfoStatus != null" >
+        #{orderInfoStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="tSampleNumber != null" >
+        #{tSampleNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReturnCreateTime != null" >
+        #{orderReturnCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tSiProject != null" >
+        #{tSiProject,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderSendInfo" >
+    update t_order_send_info
+    <set >
+      <if test="orderinfoId != null" >
+        orderInfo_id = #{orderinfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReturnShipTime != null" >
+        order_return_ship_time = #{orderReturnShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderReturnShipType != null" >
+        order_return_ship_type = #{orderReturnShipType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReturnShipNumber != null" >
+        order_return_ship_number = #{orderReturnShipNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReturnAddressId != null" >
+        order_return_address_id = #{orderReturnAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="orderAccpectShipTime != null" >
+        order_accpect_ship_time = #{orderAccpectShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderDetectionShipTime != null" >
+        order_detection_ship_time = #{orderDetectionShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderCheckShipTime != null" >
+        order_check_ship_time = #{orderCheckShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderFinshShipTime != null" >
+        order_finsh_ship_time = #{orderFinshShipTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderInfoStatus != null" >
+        order_info_status = #{orderInfoStatus,jdbcType=INTEGER},
+      </if>
+   	  <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="tSampleNumber != null" >
+        t_sample_number = #{tSampleNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReturnCreateTime != null" >
+        order_return_create_time = #{orderReturnCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tSiProject != null" >
+        t_si_project = #{tSiProject,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_send_id = #{orderSendId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderSendInfo" >
+    update t_order_send_info
+    set orderInfo_id = #{orderinfoId,jdbcType=VARCHAR},
+      order_return_ship_time = #{orderReturnShipTime,jdbcType=TIMESTAMP},
+      order_return_ship_type = #{orderReturnShipType,jdbcType=VARCHAR},
+      order_return_ship_number = #{orderReturnShipNumber,jdbcType=VARCHAR},
+      order_return_address_id = #{orderReturnAddressId,jdbcType=INTEGER},
+      order_accpect_ship_time = #{orderAccpectShipTime,jdbcType=TIMESTAMP},
+      order_detection_ship_time = #{orderDetectionShipTime,jdbcType=TIMESTAMP},
+      order_check_ship_time = #{orderCheckShipTime,jdbcType=TIMESTAMP},
+      order_finsh_ship_time = #{orderFinshShipTime,jdbcType=TIMESTAMP},
+      order_info_status = #{orderInfoStatus,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      t_sample_number = #{tSampleNumber,jdbcType=VARCHAR},
+      order_return_create_time = #{orderReturnCreateTime,jdbcType=TIMESTAMP},
+      t_si_project = #{tSiProject,jdbcType=VARCHAR},
+      order_number = #{orderNumber,jdbcType=VARCHAR}
+    where order_send_id = #{orderSendId,jdbcType=INTEGER}
+  </update>
+</mapper>

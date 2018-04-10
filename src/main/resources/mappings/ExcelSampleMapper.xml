@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.report.mapper.ExcelSampleMapper" >
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.report.model.ExcelSample" >
+    <result column="t_id" property="tId" jdbcType="INTEGER" />
+    <result column="t_si_lable" property="tSiLable" jdbcType="VARCHAR" />
+    <result column="t_si_area" property="tSiArea" jdbcType="VARCHAR" />
+    <result column="t_si_source" property="tSiSource" jdbcType="VARCHAR" />
+    <result column="t_come_number" property="tComeNumber" jdbcType="VARCHAR" />
+    <result column="t_user_name" property="tUserName" jdbcType="VARCHAR" />
+    <result column="t_user_sex" property="tUserSex" jdbcType="VARCHAR" />
+    <result column="t_user_telphone" property="tUserTelphone" jdbcType="VARCHAR" />
+    <result column="t_testing_time" property="tTestingTime" jdbcType="TIMESTAMP" />
+    <result column="t_si_project" property="tSiProject" jdbcType="VARCHAR" />
+    <result column="t_si_number" property="tSiNumber" jdbcType="VARCHAR" />
+    <result column="t_sale_name" property="tSaleName" jdbcType="VARCHAR" />
+    <result column="t_report_time" property="tReportTime" jdbcType="TIMESTAMP" />
+    <result column="t_logistics_number" property="tLogisticsNumber" jdbcType="VARCHAR" />
+    <result column="t_telephone" property="tTelephone" jdbcType="VARCHAR" />
+    <result column="t_status" property="tStatus" jdbcType="INTEGER" />
+    <result column="t_create_date" property="tCreateDate" jdbcType="TIMESTAMP" />
+    <result column="t_export_number" property="tExportNumber" jdbcType="VARCHAR" />
+    <result column="t_principal" property="tPrincipal" jdbcType="VARCHAR" />
+    <result column="t_principal_telephone" property="tPrincipalTelephone" jdbcType="VARCHAR" />
+    <result column="t_sale_email" property="tSaleEmail" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    t_id, t_si_lable, t_si_area, t_si_source, t_come_number, t_user_name, t_user_sex, t_user_telphone, 
+    t_testing_time, t_si_project, t_si_number, t_sale_name, t_report_time, t_logistics_number, 
+    t_telephone, t_status, t_create_date,t_export_number,t_principal,t_principal_telephone,t_sale_email
+  </sql>
+  
+  
+   <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.report.model.ExcelSample" >
+    select 
+    <include refid="Base_Column_List" />
+      from t_excel_sample 
+        where 1=1 
+      <if test="tUserName !=null  and tUserName !='' ">
+         and  t_user_name  like  concat('%',#{tUserName},'%')
+      </if>
+      
+      <if test="tComeNumber !=null and tComeNumber !='' ">
+         and t_come_number like  concat('%',#{tComeNumber},'%')
+      </if>
+      
+       <if test="tStatus !=null and tStatus !='' ">
+         and t_status = ${tStatus}
+      </if>
+        
+         order by   t_create_date desc
+  </select>
+  
+  <select id="selectBySiNumber" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+      from t_excel_sample   
+      where t_si_number in 
+       <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+	   </foreach> 
+         order by   t_create_date
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_excel_sample
+    where tId = #{tId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_excel_sample
+    where tId = #{tId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.report.model.ExcelSample" >
+    insert into t_excel_sample (tId, t_si_lable, t_si_area, 
+      t_si_source, t_come_number, t_user_name, 
+      t_user_sex, t_user_telphone, t_testing_time, 
+      t_si_project, t_si_number, t_sale_name, 
+      t_report_time, t_logistics_number, t_telephone, 
+      t_status, t_create_date,t_export_number,t_principal,t_principal_telephone,
+      t_sale_email)
+    values (#{tId,jdbcType=INTEGER}, #{tSiLable,jdbcType=VARCHAR}, #{tSiArea,jdbcType=VARCHAR}, 
+      #{tSiSource,jdbcType=VARCHAR}, #{tComeNumber,jdbcType=VARCHAR}, #{tUserName,jdbcType=VARCHAR}, 
+      #{tUserSex,jdbcType=VARCHAR}, #{tUserTelphone,jdbcType=VARCHAR}, #{tTestingTime,jdbcType=VARCHAR}, 
+      #{tSiProject,jdbcType=VARCHAR}, #{tSiNumber,jdbcType=VARCHAR}, #{tSaleName,jdbcType=VARCHAR}, 
+      #{tReportTime,jdbcType=VARCHAR}, #{tLogisticsNumber,jdbcType=VARCHAR}, #{tTelephone,jdbcType=VARCHAR}, 
+      #{tStatus,jdbcType=INTEGER}, #{tCreateDate,jdbcType=TIMESTAMP},#{tExportNumber,jdbcType=VARCHAR},
+      #{tPrincipal,jdbcType=VARCHAR},#{tPrincipalTelephone,jdbcType=VARCHAR},
+      #{tSaleEmail,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.report.model.ExcelSample" >
+    insert into t_excel_sample
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        tId,
+      </if>
+      <if test="tSiLable != null" >
+        t_si_lable,
+      </if>
+      <if test="tSiArea != null" >
+        t_si_area,
+      </if>
+      <if test="tSiSource != null" >
+        t_si_source,
+      </if>
+      <if test="tComeNumber != null" >
+        t_come_number,
+      </if>
+      <if test="tUserName != null" >
+        t_user_name,
+      </if>
+      <if test="tUserSex != null" >
+        t_user_sex,
+      </if>
+      <if test="tUserTelphone != null" >
+        t_user_telphone,
+      </if>
+      <if test="tTestingTime != null" >
+        t_testing_time,
+      </if>
+      <if test="tSiProject != null" >
+        t_si_project,
+      </if>
+      <if test="tSiNumber != null" >
+        t_si_number,
+      </if>
+      <if test="tSaleName != null" >
+        t_sale_name,
+      </if>
+      <if test="tReportTime != null" >
+        t_report_time,
+      </if>
+      <if test="tLogisticsNumber != null" >
+        t_logistics_number,
+      </if>
+      <if test="tTelephone != null" >
+        t_telephone,
+      </if>
+      <if test="tStatus != null" >
+        t_status,
+      </if>
+      <if test="tCreateDate != null" >
+        t_create_date,
+      </if>
+      <if test="tExportNumber!=null ">
+          t_export_number,
+      </if>
+      <if test="tPrincipal!=null ">
+          t_principal,
+      </if>
+      <if test="tPrincipalTelephone!=null ">
+          t_principal_telephone,
+      </if>
+       <if test="tSaleEmail!=null ">
+           t_sale_email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="tSiLable != null" >
+        #{tSiLable,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiArea != null" >
+        #{tSiArea,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiSource != null" >
+        #{tSiSource,jdbcType=VARCHAR},
+      </if>
+      <if test="tComeNumber != null" >
+        #{tComeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserName != null" >
+        #{tUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserSex != null" >
+        #{tUserSex,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserTelphone != null" >
+        #{tUserTelphone,jdbcType=VARCHAR},
+      </if>
+      <if test="tTestingTime != null" >
+        #{tTestingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiProject != null" >
+        #{tSiProject,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiNumber != null" >
+        #{tSiNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tSaleName != null" >
+        #{tSaleName,jdbcType=VARCHAR},
+      </if>
+      <if test="tReportTime != null" >
+        #{tReportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tLogisticsNumber != null" >
+        #{tLogisticsNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tTelephone != null" >
+        #{tTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="tStatus != null" >
+        #{tStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tCreateDate != null" >
+        #{tCreateDate,jdbcType=TIMESTAMP},
+      </if>
+       <if test="tExportNumber!=null ">
+          #{tExportNumber,jdbcType=VARCHAR},
+      </if>
+       <if test="tPrincipal!=null ">
+          #{tPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="tPrincipalTelephone!=null ">
+           #{tPrincipalTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="tSaleEmail!=null ">
+           #{tSaleEmail,jdbcType=VARCHAR},
+      </if>
+      
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.report.model.ExcelSample" >
+    update t_excel_sample
+    <set >
+      <if test="tSiLable != null" >
+        t_si_lable = #{tSiLable,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiArea != null" >
+        t_si_area = #{tSiArea,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiSource != null" >
+        t_si_source = #{tSiSource,jdbcType=VARCHAR},
+      </if>
+      <if test="tComeNumber != null" >
+        t_come_number = #{tComeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserName != null" >
+        t_user_name = #{tUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserSex != null" >
+        t_user_sex = #{tUserSex,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserTelphone != null" >
+        t_user_telphone = #{tUserTelphone,jdbcType=VARCHAR},
+      </if>
+      <if test="tTestingTime != null" >
+        t_testing_time = #{tTestingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiProject != null" >
+        t_si_project = #{tSiProject,jdbcType=VARCHAR},
+      </if>
+      <if test="tSiNumber != null" >
+        t_si_number = #{tSiNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tSaleName != null" >
+        t_sale_name = #{tSaleName,jdbcType=VARCHAR},
+      </if>
+      <if test="tReportTime != null" >
+        t_report_time = #{tReportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="tLogisticsNumber != null" >
+        t_logistics_number = #{tLogisticsNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="tTelephone != null" >
+        t_telephone = #{tTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="tStatus != null" >
+        t_status = #{tStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tCreateDate != null" >
+        t_create_date = #{tCreateDate,jdbcType=TIMESTAMP},
+      </if>
+       <if test="tPrincipal!=null ">
+         t_principal = #{tPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="tPrincipalTelephone!=null ">
+         t_principal_telephone=  #{tPrincipalTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="tSaleEmail!=null ">
+         t_sale_email=  #{tSaleEmail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tId = #{tId,jdbcType=INTEGER}
+  </update>
+  
+    <update id="updateByStatus" parameterType="com.letu.healthplatform.platformmanage.report.model.ExcelSample" >
+    	update t_excel_sample
+	    <set >
+	      <if test="tStatus != null" >
+	        t_status = #{tStatus,jdbcType=INTEGER},
+	      </if>
+	    </set>
+    	where tId = #{tId,jdbcType=INTEGER}
+  </update>
+  
+  
+   <insert id="insertBatch" parameterType="java.util.List" >
+    insert into t_excel_sample ( 
+      t_si_lable, t_si_area, 
+      t_si_source, t_come_number, 
+      t_user_name, t_user_sex, 
+      t_user_telphone, t_testing_time, 
+      t_si_project, t_si_number,
+      t_sale_name,t_report_time, 
+      t_logistics_number, t_telephone, 
+      t_status, t_export_number,
+      t_principal,t_principal_telephone,
+      t_sale_email)
+    values 
+    <foreach collection ="list" item="es" index="index" separator =",">
+      	 (  #{es.tSiLable,jdbcType=VARCHAR},  #{es.tSiArea,jdbcType=VARCHAR}, 
+      		#{es.tSiSource,jdbcType=VARCHAR}, #{es.tComeNumber,jdbcType=VARCHAR}, 
+      		#{es.tUserName,jdbcType=VARCHAR}, #{es.tUserSex,jdbcType=VARCHAR}, 
+      		#{es.tUserTelphone,jdbcType=VARCHAR},#{es.tTestingTime,jdbcType=VARCHAR}, 
+     		#{es.tSiProject,jdbcType=VARCHAR}, #{es.tSiNumber,jdbcType=VARCHAR}, 
+     		#{es.tSaleName,jdbcType=VARCHAR},  #{es.tReportTime,jdbcType=VARCHAR},
+      		#{es.tLogisticsNumber,jdbcType=VARCHAR},#{es.tTelephone,jdbcType=VARCHAR}, 
+     		#{es.tStatus,jdbcType=INTEGER},#{es.tExportNumber,jdbcType=VARCHAR},
+     		#{es.tPrincipal,jdbcType=VARCHAR},#{es.tPrincipalTelephone,jdbcType=VARCHAR},
+     		#{es.tSaleEmail,jdbcType=VARCHAR})
+     </foreach >
+     
+  </insert>
+
+  
+  
+</mapper>

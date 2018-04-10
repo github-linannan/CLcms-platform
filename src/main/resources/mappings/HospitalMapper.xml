@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.sys.mapper.HospitalMapper" >
+
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.sys.model.Hospital" >
+    <id column="t_id" property="tId" jdbcType="INTEGER" />
+    <result column="t_hospital_name" property="tHospitalName" jdbcType="VARCHAR" />
+    <result column="t_hospital_code" property="tHospitalCode" jdbcType="VARCHAR" />
+    <result column="t_hospital_address" property="tHospitalAddress" jdbcType="VARCHAR" />
+    <result column="t_status" property="tStatus" jdbcType="INTEGER" />
+    <result column="t_create_time" property="tCreateTime" jdbcType="TIMESTAMP" />
+    <result column="t_create_by" property="tCreateBy" jdbcType="VARCHAR" />
+    <result column="t_modify_time" property="tModifyTime" jdbcType="TIMESTAMP" />
+    <result column="t_modify_by" property="tModifyBy" jdbcType="VARCHAR" />
+     <result column="t_remark" property="tRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    t_id, t_hospital_name, t_hospital_code, t_hospital_address, t_status, t_create_time, 
+    t_create_by, t_modify_time, t_modify_by,t_remark
+  </sql>
+  
+   <select id="selectByPrimary" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.sys.model.Hospital" >
+    	select 
+	    	<include refid="Base_Column_List" />
+	    from t_m_hospital
+	      where 1=1 
+	    <if test="tHospitalName!=null and tHospitalName!='' ">
+	            and  t_hospital_name 
+	            like concat('%',#{tHospitalName},'%')
+	    </if>
+	     <if test="tStatus!=null ">
+	            and  t_status =  #{tStatus,jdbcType=INTEGER}
+	    </if>
+	    order by t_create_time desc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_m_hospital
+    where t_id = #{tId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey">
+    delete from t_m_hospital 
+    where t_id  in 
+         <foreach item="item" index="index" collection="array" 
+                open="(" separator="," close=")">
+               #{item}
+         </foreach>
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.sys.model.Hospital" >
+    insert into t_m_hospital (t_id, t_hospital_name, t_hospital_code, 
+      t_hospital_address, t_status, t_create_time, 
+      t_create_by, t_modify_time, t_modify_by
+      )
+    values (#{tId,jdbcType=INTEGER}, #{tHospitalName,jdbcType=VARCHAR}, #{tHospitalCode,jdbcType=VARCHAR}, 
+      #{tHospitalAddress,jdbcType=VARCHAR}, #{tStatus,jdbcType=INTEGER}, #{tCreateTime,jdbcType=TIMESTAMP}, 
+      #{tCreateBy,jdbcType=VARCHAR}, #{tModifyTime,jdbcType=TIMESTAMP}, #{tModifyBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Hospital" >
+    insert into t_m_hospital
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="tHospitalName != null" >
+        t_hospital_name,
+      </if>
+      <if test="tHospitalCode != null" >
+        t_hospital_code,
+      </if>
+      <if test="tHospitalAddress != null" >
+        t_hospital_address,
+      </if>
+      <if test="tStatus != null" >
+        t_status,
+      </if>
+      <if test="tCreateTime != null" >
+        t_create_time,
+      </if>
+      <if test="tCreateBy != null" >
+        t_create_by,
+      </if>
+      <if test="tModifyTime != null" >
+        t_modify_time,
+      </if>
+      <if test="tModifyBy != null" >
+        t_modify_by,
+      </if>
+       <if test="tRemark != null" >
+        t_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="tHospitalName != null" >
+        #{tHospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="tHospitalCode != null" >
+        #{tHospitalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="tHospitalAddress != null" >
+        #{tHospitalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tStatus != null" >
+        #{tStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tCreateTime != null" >
+        #{tCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tCreateBy != null" >
+        #{tCreateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tModifyTime != null" >
+        #{tModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tModifyBy != null" >
+        #{tModifyBy,jdbcType=VARCHAR},
+      </if>
+       <if test="tRemark != null" >
+        #{tRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Hospital" >
+    update t_m_hospital
+    <set >
+      <if test="tHospitalName != null" >
+        t_hospital_name = #{tHospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="tHospitalCode != null" >
+        t_hospital_code = #{tHospitalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="tHospitalAddress != null" >
+        t_hospital_address = #{tHospitalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tStatus != null" >
+        t_status = #{tStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tCreateTime != null" >
+        t_create_time = #{tCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tCreateBy != null" >
+        t_create_by = #{tCreateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tModifyTime != null" >
+        t_modify_time = #{tModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tModifyBy != null" >
+        t_modify_by = #{tModifyBy,jdbcType=VARCHAR},
+      </if>
+       <if test="tRemark != null" >
+        t_remark = #{tRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.sys.model.Hospital" >
+    update t_m_hospital
+    set t_hospital_name = #{tHospitalName,jdbcType=VARCHAR},
+      t_hospital_code = #{tHospitalCode,jdbcType=VARCHAR},
+      t_hospital_address = #{tHospitalAddress,jdbcType=VARCHAR},
+      t_status = #{tStatus,jdbcType=INTEGER},
+      t_create_time = #{tCreateTime,jdbcType=TIMESTAMP},
+      t_create_by = #{tCreateBy,jdbcType=VARCHAR},
+      t_modify_time = #{tModifyTime,jdbcType=TIMESTAMP},
+      t_modify_by = #{tModifyBy,jdbcType=VARCHAR}
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  
+    <update id="updateByStatus"  parameterType="map">
+	   	 update t_m_hospital set
+		        t_status = #{tStatus,jdbcType=INTEGER}
+		     where t_id in
+		       <foreach item="item" index="index" collection="list" 
+		                open="(" separator="," close=")">
+		               #{item}
+		         </foreach>
+  </update>
+  
+  
+</mapper>

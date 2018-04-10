@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            /*banner 页面*/
+            var token = MyLocalStorage.Cache.get('token');
+            //url:web_url+ "proBanner/selectByParam",
+            $("#sel_menu3").select2({
+                width : '450px',
+                placeholder : '任务名称/资源名称',
+                minimumInputLength : 1,
+                id : function(rs) {
+                    console.log(rs);
+                    return rs.taskId;
+                },
+                ajax : { // instead of writing the function to execute the request we
+                    // use Select2's convenient helper
+                    url: web_url + "appUser/selectByParam",
+                    dataType : 'json',
+                    quietMillis : 250,
+                    data : function(params, page) {
+                        return {
+                            userName: params.term,
+                            token: token,
+                        };
+                    },
+                    results : function(data, page) { // parse the results into the
+                        // format expected by Select2.
+                        // since we are using custom formatting functions we do not need
+                        // to alter the remote JSON data
+                        console.log(data);
+                        return {
+                            results : data.items
+                        };
+                    },
+                    cache : true
+                },
+                /*initSelection : function(element, callback) {
+                },*/
+                formatResult : formatRepo, // omitted for brevity, see the
+                // source of this page
+                formatSelection : formatRepo, // omitted for brevity, see the
+                                                    // source of this page
+                dropdownCssClass : 'bigdrop', // apply css that makes the dropdown
+                // taller
+                escapeMarkup : function(m) {
+                    return m;
+                } // we do not want to escape markup since we are displaying html in
+                // results
+            });
+
+        });
+        function formatRepo(repo){
+            console.log(repo);
+            return repo.text
+        }
+        function formatRepoSelection(repo) {
+            console.log(repo);
+            if (repo.loading) return repo.text;
+            var markup = "<div>"+repo.text+"</div>";
+            return markup;
+        }
+
+
+
+    </script>
+</head>
+<body>
+test
+
+<div style="margin: auto;">
+    <select id="sel_menu3" class="js-data-example-ajax form-control">
+        <option value="" selected="selected">请选择</option>
+    </select>
+
+</div>
+
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="lib/common/utils.js" ></script>
+
+<script type="text/javascript" src="js/zy-ajax.js" ></script>
+</body>
+
+</html>

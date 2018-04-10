@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.goods.mapper.GoodsInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.goods.model.GoodsInfo" >
+    <id column="goodsInfo_id" property="goodsinfoId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goodsInfo_content" property="goodsinfoContent" jdbcType="VARCHAR" />
+    <result column="goodsInfo_image_one" property="goodsinfoImageOne" jdbcType="VARCHAR" />
+    <result column="goodsInfo_image_two" property="goodsinfoImageTwo" jdbcType="VARCHAR" />
+    <result column="goodsInfo_image_three" property="goodsinfoImageThree" jdbcType="VARCHAR" />
+    <result column="goodsInfo_image_four" property="goodsinfoImageFour" jdbcType="VARCHAR" />
+    <result column="goodsInfo_image_five" property="goodsinfoImageFive" jdbcType="VARCHAR" />
+    <result column="goodsInfo_image_sixe" property="goodsinfoImageSixe" jdbcType="VARCHAR" />
+    <result column="goodsInfo_details" property="goodsinfoDetails" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+  
+  <sql id="Base_Column_List" >
+    goodsInfo_id, goods_id, goodsInfo_content, goodsInfo_image_one, goodsInfo_image_two, 
+    goodsInfo_image_three, goodsInfo_image_four, 
+    goodsInfo_image_five, goodsInfo_image_sixe, goodsInfo_details
+  </sql>
+  
+   <select id="selectByParam" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_goods_info
+    where goodsInfo_id = #{goodsinfoId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_goods_info
+    where goodsInfo_id = #{goodsinfoId,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_goods_info
+    where goodsInfo_id = #{goodsinfoId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsInfo" >
+    insert into t_goods_info (goodsInfo_id, goods_id, goodsInfo_content, 
+      goodsInfo_image_one, goodsInfo_image_two, goodsInfo_image_three, 
+      goodsInfo_image_four, goodsInfo_image_five, 
+      goodsInfo_image_sixe, goodsInfo_details
+      )
+    values (#{goodsinfoId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{goodsinfoContent,jdbcType=VARCHAR}, 
+      #{goodsinfoImageOne,jdbcType=VARCHAR}, #{goodsinfoImageTwo,jdbcType=VARCHAR}, #{goodsinfoImageThree,jdbcType=VARCHAR}, 
+      #{goodsinfoImageFour,jdbcType=VARCHAR}, #{goodsinfoImageFive,jdbcType=VARCHAR}, 
+      #{goodsinfoImageSixe,jdbcType=VARCHAR}, #{goodsinfoDetails,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsInfo" >
+    insert into t_goods_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsinfoId != null" >
+        goodsInfo_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsinfoContent != null" >
+        goodsInfo_content,
+      </if>
+      <if test="goodsinfoImageOne != null" >
+        goodsInfo_image_one,
+      </if>
+      <if test="goodsinfoImageTwo != null" >
+        goodsInfo_image_two,
+      </if>
+      <if test="goodsinfoImageThree != null" >
+        goodsInfo_image_three,
+      </if>
+      <if test="goodsinfoImageFour != null" >
+        goodsInfo_image_four,
+      </if>
+      <if test="goodsinfoImageFive != null" >
+        goodsInfo_image_five,
+      </if>
+      <if test="goodsinfoImageSixe != null" >
+        goodsInfo_image_sixe,
+      </if>
+      <if test="goodsinfoDetails != null" >
+        goodsInfo_details,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsinfoId != null" >
+        #{goodsinfoId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsinfoContent != null" >
+        #{goodsinfoContent,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageOne != null" >
+        #{goodsinfoImageOne,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageTwo != null" >
+        #{goodsinfoImageTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageThree != null" >
+        #{goodsinfoImageThree,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageFour != null" >
+        #{goodsinfoImageFour,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageFive != null" >
+        #{goodsinfoImageFive,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageSixe != null" >
+        #{goodsinfoImageSixe,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoDetails != null" >
+        #{goodsinfoDetails,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsInfo" >
+    update t_goods_info
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsinfoContent != null" >
+        goodsInfo_content = #{goodsinfoContent,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageOne != null" >
+        goodsInfo_image_one = #{goodsinfoImageOne,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageTwo != null" >
+        goodsInfo_image_two = #{goodsinfoImageTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageThree != null" >
+        goodsInfo_image_three = #{goodsinfoImageThree,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageFour != null" >
+        goodsInfo_image_four = #{goodsinfoImageFour,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageFive != null" >
+        goodsInfo_image_five = #{goodsinfoImageFive,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageSixe != null" >
+        goodsInfo_image_sixe = #{goodsinfoImageSixe,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoDetails != null" >
+        goodsInfo_details = #{goodsinfoDetails,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where goodsInfo_id = #{goodsinfoId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsInfo" >
+    update t_goods_info
+    set goods_id = #{goodsId,jdbcType=INTEGER},
+      goodsInfo_content = #{goodsinfoContent,jdbcType=VARCHAR},
+      goodsInfo_image_one = #{goodsinfoImageOne,jdbcType=VARCHAR},
+      goodsInfo_image_two = #{goodsinfoImageTwo,jdbcType=VARCHAR},
+      goodsInfo_image_three = #{goodsinfoImageThree,jdbcType=VARCHAR},
+      goodsInfo_image_four = #{goodsinfoImageFour,jdbcType=VARCHAR},
+      goodsInfo_image_five = #{goodsinfoImageFive,jdbcType=VARCHAR},
+      goodsInfo_image_sixe = #{goodsinfoImageSixe,jdbcType=VARCHAR}
+    where goodsInfo_id = #{goodsinfoId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByGoodsId" parameterType="com.letu.healthplatform.platformmanage.goods.model.GoodsInfo" >
+    update t_goods_info
+    <set >
+      <if test="goodsinfoContent != null" >
+        goodsInfo_content = #{goodsinfoContent,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageOne != null" >
+        goodsInfo_image_one = #{goodsinfoImageOne,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageTwo != null" >
+        goodsInfo_image_two = #{goodsinfoImageTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageThree != null" >
+        goodsInfo_image_three = #{goodsinfoImageThree,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageFour != null" >
+        goodsInfo_image_four = #{goodsinfoImageFour,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageFive != null" >
+        goodsInfo_image_five = #{goodsinfoImageFive,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoImageSixe != null" >
+        goodsInfo_image_sixe = #{goodsinfoImageSixe,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsinfoDetails != null" >
+        goodsInfo_details = #{goodsinfoDetails,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+     
+  </update>
+  
+  
+</mapper>

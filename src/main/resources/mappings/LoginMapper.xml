@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.sys.mapper.LoginMapper" >
+ 
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    <id column="t_id" property="tId" jdbcType="INTEGER" />
+    <result column="t_login_name" property="tLoginName" jdbcType="VARCHAR" />
+    <result column="t_password" property="tPassword" jdbcType="VARCHAR" />
+    <result column="t_user_name" property="tUserName" jdbcType="VARCHAR" />
+    <result column="t_telephone" property="tTelephone" jdbcType="VARCHAR" />
+    <result column="t_email" property="tEmail" jdbcType="VARCHAR" />
+    <result column="t_user_type" property="tUserType" jdbcType="INTEGER" />
+    <result column="t_pid" property="tPid" jdbcType="INTEGER" />
+    <result column="t_invite" property="tInvite" jdbcType="VARCHAR" />
+    <result column="t_address" property="tAddress" jdbcType="VARCHAR" />
+    <result column="t_status" property="tStatus" jdbcType="INTEGER" />
+    <result column="t_create_time" property="tCreateTime" jdbcType="TIMESTAMP" />
+    <result column="t_create_by" property="tCreateBy" jdbcType="VARCHAR" />
+    <result column="t_last_time" property="tLastTime" jdbcType="TIMESTAMP" />
+    <result column="t_count" property="tCount" jdbcType="VARCHAR" />
+   	<result column="t_hospital_id" property="tHospitalId" jdbcType="INTEGER" />
+    <result column="t_department_id" property="tDepartmentId" jdbcType="INTEGER" />
+    <result column="t_director" property="tDirector" jdbcType="INTEGER" />
+    <result column="t_director_id" property="tDirectorId" jdbcType="INTEGER" />
+    <result column="t_superior_id" property="tSuperiorId" jdbcType="VARCHAR" />
+    <result column="t_superior_email" property="tSuperiorEmail" jdbcType="VARCHAR" />
+       
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    t_id, t_login_name, t_password, t_user_name, t_telephone, t_email, t_user_type, t_pid, 
+    t_invite, t_address, t_status, t_create_time, t_create_by, t_last_time, t_count, 
+    t_hospital_id, t_department_id, t_director, t_director_id,t_superior_id,t_superior_email
+  </sql>
+  
+  
+   <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_m_login
+        where 1=1 
+         <if test="tLoginName!=null and tLoginName!='' ">
+            and t_login_name like concat('%',#{tLoginName},'%') 
+         </if>
+         <if test="tUserName!=null and tUserName!='' ">
+            and t_user_name like concat('%',#{tUserName},'%') 
+         </if>
+         
+         <if test="tTelephone!=null and  tTelephone !='' ">
+            and t_telephone like concat('%',#{tTelephone},'%') 
+         </if>
+         
+          <if test="tStatus!=null ">
+            and t_status = #{tStatus} 
+         </if>
+         <if test="tUserType!=null">
+            and t_user_type = #{tUserType}
+         </if>
+         <if test="tId!=null">
+            and t_id = #{tId}
+         </if>
+         
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_m_login
+    where t_id = #{tId,jdbcType=INTEGER}
+  </select>
+  
+  
+   <select id="selectByLoginDirector" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    select 
+     <include refid="Base_Column_List" />
+     from t_m_login
+        where 1=1 
+        and  t_hospital_id =#{tHospitalId}
+        and  t_department_id =#{tDepartmentId}
+        and  t_director =1
+  </select>
+  
+  
+   <select id="selectByModel" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    select 
+     <include refid="Base_Column_List" />
+     from t_m_login
+        where 1=1 
+        and  t_login_name =#{tLoginName}
+  </select>
+  
+   <select id="selectDirector" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    select 
+     <include refid="Base_Column_List" />
+     from t_m_login
+        where 1=1 
+        and  t_hospital_id =#{tHospitalId}
+        and  t_department_id =#{tDepartmentId}
+        and  t_director =0
+   </select>
+  
+ <delete id="deleteByPrimaryKey"  >
+    delete from t_m_login 
+    where t_id  in 
+         <foreach item="item" index="index" collection="array" 
+                open="(" separator="," close=")">
+               #{item}
+         </foreach>
+  </delete>
+  
+ <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    insert into t_m_login (t_id, t_login_name, t_password, 
+      t_user_name, t_telephone, t_email, 
+      t_user_type, t_pid, t_invite, 
+      t_address, t_status, t_create_time, 
+      t_create_by, t_last_time, t_count, 
+      t_hospital_id, t_department_id, t_director, 
+      t_director_id,t_superior_id,t_superior_email)
+    values (#{tId,jdbcType=INTEGER}, #{tLoginName,jdbcType=VARCHAR}, #{tPassword,jdbcType=VARCHAR}, 
+      #{tUserName,jdbcType=VARCHAR}, #{tTelephone,jdbcType=VARCHAR}, #{tEmail,jdbcType=VARCHAR}, 
+      #{tUserType,jdbcType=INTEGER}, #{tPid,jdbcType=INTEGER}, #{tInvite,jdbcType=VARCHAR}, 
+      #{tAddress,jdbcType=VARCHAR}, #{tStatus,jdbcType=INTEGER}, #{tCreateTime,jdbcType=TIMESTAMP}, 
+      #{tCreateBy,jdbcType=VARCHAR}, #{tLastTime,jdbcType=TIMESTAMP}, #{tCount,jdbcType=VARCHAR}, 
+      #{tHospitalId,jdbcType=INTEGER}, #{tDepartmentId,jdbcType=INTEGER}, #{tDirector,jdbcType=INTEGER}, 
+      #{tDirectorId,jdbcType=INTEGER},#{tSuperiorId,jdbcType=VARCHAR}),#{tSuperiorEmail,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <insert id="insertSelective" 
+  useGeneratedKeys="true" keyProperty="tId"
+  parameterType="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    insert into t_m_login
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="tLoginName != null" >
+        t_login_name,
+      </if>
+      <if test="tPassword != null" >
+        t_password,
+      </if>
+      <if test="tUserName != null" >
+        t_user_name,
+      </if>
+      <if test="tTelephone != null" >
+        t_telephone,
+      </if>
+      <if test="tEmail != null" >
+        t_email,
+      </if>
+      <if test="tUserType != null" >
+        t_user_type,
+      </if>
+      <if test="tPid != null" >
+        t_pid,
+      </if>
+      <if test="tInvite != null" >
+        t_invite,
+      </if>
+      <if test="tAddress != null" >
+        t_address,
+      </if>
+      <if test="tStatus != null" >
+        t_status,
+      </if>
+      <if test="tCreateTime != null" >
+        t_create_time,
+      </if>
+      <if test="tCreateBy != null" >
+        t_create_by,
+      </if>
+      <if test="tLastTime != null" >
+        t_last_time,
+      </if>
+      <if test="tCount != null" >
+        t_count,
+      </if>
+      <if test="tHospitalId != null" >
+        t_hospital_id,
+      </if>
+      <if test="tDepartmentId != null" >
+        t_department_id,
+      </if>
+      <if test="tDirector != null" >
+        t_director,
+      </if>
+      <if test="tDirectorId != null" >
+        t_director_id,
+      </if>
+      <if test="tSuperiorId!= null" >
+        t_superior_id,
+      </if>
+       <if test="tSuperiorEmail!= null" >
+        t_superior_email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="tLoginName != null" >
+        #{tLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="tPassword != null" >
+        #{tPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserName != null" >
+        #{tUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="tTelephone != null" >
+        #{tTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="tEmail != null" >
+        #{tEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserType != null" >
+        #{tUserType,jdbcType=INTEGER},
+      </if>
+      <if test="tPid != null" >
+        #{tPid,jdbcType=INTEGER},
+      </if>
+      <if test="tInvite != null" >
+        #{tInvite,jdbcType=VARCHAR},
+      </if>
+      <if test="tAddress != null" >
+        #{tAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tStatus != null" >
+        #{tStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tCreateTime != null" >
+        #{tCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tCreateBy != null" >
+        #{tCreateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tLastTime != null" >
+        #{tLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tCount != null" >
+        #{tCount,jdbcType=VARCHAR},
+      </if>
+      <if test="tHospitalId != null" >
+        #{tHospitalId,jdbcType=INTEGER},
+      </if>
+      <if test="tDepartmentId != null" >
+        #{tDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="tDirector != null" >
+        #{tDirector,jdbcType=INTEGER},
+      </if>
+      <if test="tDirectorId != null" >
+        #{tDirectorId,jdbcType=INTEGER},
+      </if>
+      <if test=" tSuperiorId!= null" >
+         #{tSuperiorId,jdbcType=INTEGER},
+      </if>
+       <if test="tSuperiorEmail!= null" >
+         #{tSuperiorEmail,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    update t_m_login
+    <set >
+      <if test="tLoginName != null" >
+        t_login_name = #{tLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="tPassword != null" >
+        t_password = #{tPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserName != null" >
+        t_user_name = #{tUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="tTelephone != null" >
+        t_telephone = #{tTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="tEmail != null" >
+        t_email = #{tEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserType != null" >
+        t_user_type = #{tUserType,jdbcType=INTEGER},
+      </if>
+      <if test="tPid != null" >
+        t_pid = #{tPid,jdbcType=INTEGER},
+      </if>
+      <if test="tInvite != null" >
+        t_invite = #{tInvite,jdbcType=VARCHAR},
+      </if>
+      <if test="tAddress != null" >
+        t_address = #{tAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tStatus != null" >
+        t_status = #{tStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tCreateTime != null" >
+        t_create_time = #{tCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tCreateBy != null" >
+        t_create_by = #{tCreateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tLastTime != null" >
+        t_last_time = #{tLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tCount != null" >
+        t_count = #{tCount,jdbcType=VARCHAR},
+      </if>
+      <if test="tHospitalId != null" >
+        t_hospital_id = #{tHospitalId,jdbcType=INTEGER},
+      </if>
+      <if test="tDepartmentId != null" >
+        t_department_id = #{tDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="tDirector != null" >
+        t_director = #{tDirector,jdbcType=INTEGER},
+      </if>
+      <if test="tDirectorId != null" >
+        t_director_id = #{tDirectorId,jdbcType=INTEGER},
+      </if>
+      <if test="tSuperiorId!= null" >
+        t_superior_id= #{tSuperiorId,jdbcType=INTEGER},
+      </if>
+       <if test="tSuperiorEmail!= null" >
+        t_superior_email=#{tSuperiorEmail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.sys.model.Login" >
+    update t_m_login
+    set t_login_name = #{tLoginName,jdbcType=VARCHAR},
+      t_password = #{tPassword,jdbcType=VARCHAR},
+      t_user_name = #{tUserName,jdbcType=VARCHAR},
+      t_telephone = #{tTelephone,jdbcType=VARCHAR},
+      t_email = #{tEmail,jdbcType=VARCHAR},
+      t_user_type = #{tUserType,jdbcType=INTEGER},
+      t_pid = #{tPid,jdbcType=INTEGER},
+      t_invite = #{tInvite,jdbcType=VARCHAR},
+      t_address = #{tAddress,jdbcType=VARCHAR},
+      t_status = #{tStatus,jdbcType=INTEGER},
+      t_create_time = #{tCreateTime,jdbcType=TIMESTAMP},
+      t_create_by = #{tCreateBy,jdbcType=VARCHAR},
+      t_last_time = #{tLastTime,jdbcType=TIMESTAMP},
+      t_count = #{tCount,jdbcType=VARCHAR},
+      t_hospital_id = #{tHospitalId,jdbcType=INTEGER},
+      t_department_id = #{tDepartmentId,jdbcType=INTEGER},
+      t_director = #{tDirector,jdbcType=INTEGER},
+      t_director_id = #{tDirectorId,jdbcType=INTEGER},
+      t_superior_id=#{tSuperiorId,jdbcType=INTEGER},
+      t_superior_email=#{tSuperiorEmail,jdbcType=VARCHAR}
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  
+    <update id="updateByStatus"  parameterType="map">
+   	 update t_m_login set
+	        t_status = #{tStatus,jdbcType=INTEGER}
+	     where t_id in
+	       <foreach item="item" index="index" collection="list" 
+	                open="(" separator="," close=")">
+	               #{item}
+	         </foreach>
+ 	</update>
+ 	
+ 	
+  <update id="updateDirector" parameterType="map" >
+   	 update t_m_login set
+	        t_director_id = #{tDirectorId}
+	     where  1=1  <!-- and  t_id in
+	       <foreach item="login" index="index" collection="list" 
+	                open="(" separator="," close=")">
+	               #{login.tId}
+	         </foreach> -->
+	    and  t_hospital_id =#{tHospitalId}
+        and  t_department_id =#{tDepartmentId}
+        and  t_director = #{tDirector}  
+	       
+ 	</update>
+  
+</mapper>

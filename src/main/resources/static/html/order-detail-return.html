@@ -1,0 +1,169 @@
+﻿<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="Bookmark" href="/favicon.ico" >
+	<link rel="Shortcut Icon" href="/favicon.ico" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5shiv.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+
+	<title>订单详情-接收管理</title>
+	<meta name="keywords" content="订单详情-接收管理">
+	<meta name="description" content="订单详情-接收管理">
+</head>
+<body>
+
+<article class="page-container" id="order-detail-pay">
+	<form class="form form-horizontal" id="form-orderDetail-return">
+		<div class="row cl">
+			<label class="text-r col-xs-4 col-sm-2">姓名：</label>
+				<span name="loginNickname" class="text-l col-xs-8 col-sm-3" ></span>
+			<label class="text-r col-xs-4 col-sm-2">电话：</label>
+				<span name="loginTelephone" class="text-l col-xs-8 col-sm-3"></span>
+		</div>
+		<div class="row cl">
+			<label class="text-r col-xs-4 col-sm-2">订单编号：</label>
+				<span name="orderNumber" class="text-l col-xs-8 col-sm-3"></span>
+			<input type="hidden" name="orderinfoId" id="orderinfoId">
+			<label class="form-label col-xs-4 col-sm-2">状态：</label>
+			<span name="orderInfoStatus" class="text-l col-xs-8 col-sm-3"></span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">订单金额：</label>
+			<span name="orderPayTotalPrice" class="text-l col-xs-8 col-sm-3"></span>
+			<label class="form-label col-xs-4 col-sm-2">商品名称：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入商品名称"  name="goodsName ">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">检测项目：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="请输入检测项目"  name="tSiProject ">
+			</div>
+			<label class="form-label col-xs-4 col-sm-2">检测人：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="检测人" placeholder="请输入检测人"  name="userName">
+				<input type="hidden" id="userId" name="userId">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">检测人电话：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="检测人电话" placeholder="请输入检测人电话"  name="userTelephone">
+			</div>
+			<label class="form-label col-xs-4 col-sm-2">采样盒编号：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="采样盒编号" placeholder="请输入采样盒编号"  name="tSampleNumber" id="tSampleNumber">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="text-r col-xs-4 col-sm-2">快递公司：</label>
+			<span name="orderReturnShipType" class="text-l col-xs-8 col-sm-3"></span>
+			<label class="text-r col-xs-4 col-sm-2">快递单号：</label>
+			<span name="orderReturnShipNumber" class="text-l col-xs-8 col-sm-3"></span>
+		</div>
+        <div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">饮酒史：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="" placeholder="请输入饮酒史"  name="userinfoDrink">
+				</div>
+				<label class="form-label col-xs-4 col-sm-2">运动习惯：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="" placeholder="请输入运动习惯"  name="userinfoExperience">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">饮食习惯：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="检测人" placeholder="请输入饮食习惯"  name="userinfoEat">
+				</div>
+				<label class="form-label col-xs-4 col-sm-2">睡眠质量：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="检测人电话" placeholder="请输入睡眠质量"  name="userinfoSleep">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">吸烟史：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="吸烟史" placeholder="请输入吸烟史"  name="userinfoSmoking">
+				</div>
+				<label class="form-label col-xs-4 col-sm-2">药物过敏史：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="检测人电话" placeholder="请输入药物过敏史"  name="userinfoDrugallergy">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">个人既往病史：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="个人既往病史" placeholder="请输入个人既往病史"  name="userinfoMedicalhistory">
+				</div>
+				<label class="form-label col-xs-4 col-sm-2">疾病家族史：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="检测人电话" placeholder="请输入疾病家族史"  name="userinfoFamilyhistory">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">吸烟每天数量：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="吸烟每天数量" placeholder="请输入吸烟每天数量"  name="userinfoSmokenum">
+				</div>
+				<label class="form-label col-xs-4 col-sm-2">其他病史：</label>
+				<div class="formControls col-xs-8 col-sm-3">
+					<input type="text" class="input-text" value="其他病史" placeholder="请输入其他病史"  name="otherdisease">
+				</div>
+			</div>
+		</div>
+        <div>
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button class="btn btn-secondary radius" type="submit" id="order-detail-save"><i class="Hui-iconfont">&#xe632;</i> 确认收货</button>
+					<button onClick="orderDetail_cancel();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row cl col-offset-1">
+			<label class=" col-xs-9 col-sm-9 mt-50 f-12 ">
+				(补充说明：0：未支付，1：支付成功，2：已发货（盒子） 3：已回寄，4：已收到样品，5：检测中，6：报告待审核，7：完成报告 。-1支付失败，-2申请退款，-3已退款 -9 删除订单)</label>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="lib/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="lib/common/utils.js"></script>
+<script type="text/javascript" src="js/sys/order-detail-return.js"></script>
+
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

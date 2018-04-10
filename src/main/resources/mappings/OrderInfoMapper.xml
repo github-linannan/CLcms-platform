@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letu.healthplatform.platformmanage.order.mapper.OrderInfoMapper">
+  
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.order.model.OrderInfo">
+    <id column="orderInfo_id" jdbcType="INTEGER" property="orderinfoId" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="order_goods_num" jdbcType="INTEGER" property="orderGoodsNum" />
+    <result column="order_goods_price" jdbcType="DOUBLE" property="orderGoodsPrice" />
+    <result column="order_goods_discount" jdbcType="REAL" property="orderGoodsDiscount" />
+    <result column="order_goods_discount_price" jdbcType="DOUBLE" property="orderGoodsDiscountPrice" />
+    <result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime" />
+    <result column="order_update_time" jdbcType="TIMESTAMP" property="orderUpdateTime" />
+    <result column="order_particulars" jdbcType="VARCHAR" property="orderParticulars" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    orderInfo_id, order_number, goods_id, order_goods_num, order_goods_price, order_goods_discount, 
+    order_goods_discount_price, order_particulars,order_create_time, order_update_time
+  </sql>
+  
+  
+  <!-- 未发货订单详情 -->
+  <select id="selectOrderInfoDetails" parameterType="com.letu.healthplatform.platformmanage.order.model.Order"
+        resultType="map">
+        select
+			t.goods_id AS goodsId,
+			tg.goods_name AS goodsName,
+			t.order_goods_num AS orderGoodsNum,
+			t.order_goods_price AS orderGoodsPrice,
+			t.order_goods_discount AS orderGoodsDiscount,
+			t.order_goods_discount_price AS orderGoodsDiscountPrice,
+			t.order_particulars AS orderParticulars
+			FROM  t_order_info t,
+			 t_goods tg
+		WHERE  t.goods_id =tg.goods_id
+   
+      <if test="orderNumber!=null and orderNumber != ''">
+        and t.order_number = #{orderNumber}
+     </if>
+  </select> 
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_info
+    where orderInfo_id = #{orderinfoId,jdbcType=INTEGER}
+  </select>
+  
+    <select id="selectByOrderNumber" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderInfo" resultMap="BaseResultMap">
+     select 
+      <include refid="Base_Column_List" />
+      from t_order_info
+        where order_number = #{orderNumber}
+   </select>
+  
+  
+  <!-- 接收管理 -->
+   <select id="selectAcceptParam" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderInfo" resultType="map">
+	SELECT
+	t.orderInfo_id AS orderinfoId,
+	t.order_number AS orderNumber,
+	l.login_nickname AS loginNickname,
+	l.login_telephone AS loginTelephone,
+	g.goods_name AS goodsName ,
+	s.t_si_project AS tSiProject ,
+	u.user_name AS userName,
+	u.user_telephone AS userTelephone,
+	s.t_sample_number AS tSampleNumber,
+	s.order_return_ship_type AS orderReturnShipType,
+	s.order_return_ship_number AS orderReturnShipNumber,
+	s.order_info_status AS orderInfoStatus
+	FROM t_order_info t ,
+	t_order d,
+	t_goods g,
+	t_order_send_info s ,
+	t_login l ,
+	t_user u
+	WHERE
+	t.goods_id=g.goods_id
+	AND t.orderInfo_id = s.orderInfo_id
+	AND t.order_number = d.order_number
+	AND d.login_id =l.login_id
+	AND s.user_id = u.user_id
+	AND s.order_info_status=4
+	AND s.order_info_status!="-9" 
+	
+	<if test="orderinfoId !=null ">
+	    and orderInfo_id &gt;=  ${orderinfoId}
+	</if>
+	
+   </select>
+   
+   
+   
+   <!-- 接收管理详情 -->
+   <select id="selectAcceptDetails" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderInfo" resultType="map">
+		SELECT
+			s.order_send_id AS orderSendId,
+			t.orderInfo_id AS orderinfoId,
+			t.order_number AS orderNumber,
+			l.login_nickname AS loginNickname,
+			l.login_telephone AS loginTelephone,
+			g.goods_name AS goodsName ,
+			s.t_si_project AS tSiProject ,
+			u.user_id as userId,
+			u.user_name AS userName,
+			u.user_telephone AS userTelephone,
+			s.t_sample_number AS tSampleNumber,
+			s.order_return_ship_type AS orderReturnShipType,
+			s.order_return_ship_number AS orderReturnShipNumber,
+			s.order_info_status AS orderInfoStatus
+			FROM t_order_info t ,
+			t_order d,
+			t_goods g,
+			t_order_send_info s ,
+			t_login l ,
+			t_user u
+			WHERE
+			t.goods_id=g.goods_id
+			AND t.orderInfo_id = s.orderInfo_id
+			AND t.order_number = d.order_number
+			AND d.login_id =l.login_id
+			AND s.user_id = u.user_id
+	
+		<if test="orderinfoId !=null ">
+		    and t.orderInfo_id =  ${orderinfoId}
+		</if>
+		<if test="orderInfoStatus !=null ">
+		    and s.order_info_status =  ${orderInfoStatus}
+		</if>
+		
+		
+	
+   </select>
+   
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_order_info
+    where orderInfo_id = #{orderinfoId,jdbcType=INTEGER}
+  </delete>
+    
+    
+    
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderInfo">
+    insert into t_order_info (orderInfo_id, order_number, goods_id, 
+      order_goods_num, order_goods_price, order_goods_discount, 
+      order_goods_discount_price, order_create_time, 
+      order_update_time,order_particulars)
+    values (#{orderinfoId,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, 
+      #{orderGoodsNum,jdbcType=INTEGER}, #{orderGoodsPrice,jdbcType=DOUBLE}, #{orderGoodsDiscount,jdbcType=REAL}, 
+      #{orderGoodsDiscountPrice,jdbcType=DOUBLE}, #{orderCreateTime,jdbcType=TIMESTAMP}, 
+      #{orderUpdateTime,jdbcType=TIMESTAMP},#{orderParticulars,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderInfo">
+    insert into t_order_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderinfoId != null">
+        orderInfo_id,
+      </if>
+      <if test="orderNumber != null">
+        order_number,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="orderGoodsNum != null">
+        order_goods_num,
+      </if>
+      <if test="orderGoodsPrice != null">
+        order_goods_price,
+      </if>
+      <if test="orderGoodsDiscount != null">
+        order_goods_discount,
+      </if>
+      <if test="orderGoodsDiscountPrice != null">
+        order_goods_discount_price,
+      </if>
+      <if test="orderCreateTime != null">
+        order_create_time,
+      </if>
+      <if test="orderUpdateTime != null">
+        order_update_time,
+      </if>
+       <if test="orderParticulars != null">
+         order_particulars,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderinfoId != null">
+        #{orderinfoId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNumber != null">
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="orderGoodsNum != null">
+        #{orderGoodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderGoodsPrice != null">
+        #{orderGoodsPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderGoodsDiscount != null">
+        #{orderGoodsDiscount,jdbcType=REAL},
+      </if>
+      <if test="orderGoodsDiscountPrice != null">
+        #{orderGoodsDiscountPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderCreateTime != null">
+        #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderUpdateTime != null">
+        #{orderUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="orderParticulars != null">
+          #{orderParticulars,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderInfo">
+    update t_order_info
+    <set>
+      <if test="orderNumber != null">
+        order_number = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="orderGoodsNum != null">
+        order_goods_num = #{orderGoodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderGoodsPrice != null">
+        order_goods_price = #{orderGoodsPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderGoodsDiscount != null">
+        order_goods_discount = #{orderGoodsDiscount,jdbcType=REAL},
+      </if>
+      <if test="orderGoodsDiscountPrice != null">
+        order_goods_discount_price = #{orderGoodsDiscountPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderCreateTime != null">
+        order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderUpdateTime != null">
+        order_update_time = #{orderUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderParticulars != null">
+         #{orderParticulars,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where orderInfo_id = #{orderinfoId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.order.model.OrderInfo">
+    update t_order_info
+    set order_number = #{orderNumber,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      order_goods_num = #{orderGoodsNum,jdbcType=INTEGER},
+      order_goods_price = #{orderGoodsPrice,jdbcType=DOUBLE},
+      order_goods_discount = #{orderGoodsDiscount,jdbcType=REAL},
+      order_goods_discount_price = #{orderGoodsDiscountPrice,jdbcType=DOUBLE},
+      order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+      order_update_time = #{orderUpdateTime,jdbcType=TIMESTAMP},
+      order_particulars=  #{orderParticulars,jdbcType=VARCHAR}
+    where orderInfo_id =  #{orderinfoId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 批量写入入库 -->
+   <insert id="insertOrderInfoBatch"  parameterType="java.util.List" >
+      <selectKey resultType ="java.lang.Integer" keyProperty= "orderInfoId"
+                 order= "AFTER">
+                SELECT LAST_INSERT_ID()
+            </selectKey >
+    insert into t_order_info ( order_number, goods_id, 
+      order_goods_num, order_goods_price, order_goods_discount, 
+      order_goods_discount_price, order_create_time)
+    values 
+     <foreach collection ="list" item="orderInfo" index= "index" separator =",">
+	    (#{orderInfo.orderNumber,jdbcType=VARCHAR}, #{orderInfo.goodsId,jdbcType=INTEGER}, 
+	      #{orderInfo.orderGoodsNum,jdbcType=INTEGER}, #{orderInfo.orderGoodsPrice,jdbcType=DOUBLE}, #{orderInfo.orderGoodsDiscount,jdbcType=REAL}, 
+	      #{orderInfo.orderGoodsDiscountPrice,jdbcType=DOUBLE}, #{orderInfo.orderCreateTime,jdbcType=TIMESTAMP})
+     </foreach >
+  </insert>
+  
+</mapper>

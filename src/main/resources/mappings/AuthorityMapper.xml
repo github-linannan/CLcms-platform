@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.sys.mapper.AuthorityMapper" >
+ 
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.sys.model.Authority" >
+    <id column="t_id" property="tId" jdbcType="INTEGER" />
+    <result column="t_authority_name" property="tAuthorityName" jdbcType="VARCHAR" />
+    <result column="t_create_time" property="tCreateTime" jdbcType="TIMESTAMP" />
+    <result column="t_remark" property="tRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    t_id, t_authority_name, t_create_time, t_remark
+  </sql>
+  
+  
+   <select id="selectByParam" resultMap="BaseResultMap" parameterType="com.letu.healthplatform.platformmanage.sys.model.Authority" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_m_authority
+       where 1=1
+         <if test="tAuthorityName!=null and tAuthorityName!=''">
+          	 and t_authority_name like concat('%',#{tAuthorityName},'%')
+         </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_m_authority
+    where t_id = #{tId,jdbcType=INTEGER}
+  </select>
+  
+   <delete id="deleteByPrimaryKey" >
+    delete from t_m_authority 
+    where t_id  in 
+         <foreach item="item" index="index" collection="array" 
+                open="(" separator="," close=")">
+               #{item}
+         </foreach>
+  </delete>
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.sys.model.Authority" >
+    insert into t_m_authority (t_id, t_authority_name, t_create_time, 
+      t_remark)
+    values (#{tId,jdbcType=INTEGER}, #{tAuthorityName,jdbcType=VARCHAR}, #{tCreateTime,jdbcType=TIMESTAMP}, 
+      #{tRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Authority" >
+    insert into t_m_authority
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        t_id,
+      </if>
+      <if test="tAuthorityName != null" >
+        t_authority_name,
+      </if>
+      <if test="tCreateTime != null" >
+        t_create_time,
+      </if>
+      <if test="tRemark != null" >
+        t_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tId != null" >
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="tAuthorityName != null" >
+        #{tAuthorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="tCreateTime != null" >
+        #{tCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tRemark != null" >
+        #{tRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.Authority" >
+    update t_m_authority
+    <set >
+      <if test="tAuthorityName != null" >
+        t_authority_name = #{tAuthorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="tCreateTime != null" >
+        t_create_time = #{tCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tRemark != null" >
+        t_remark = #{tRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.sys.model.Authority" >
+    update t_m_authority
+    set t_authority_name = #{tAuthorityName,jdbcType=VARCHAR},
+      t_create_time = #{tCreateTime,jdbcType=TIMESTAMP},
+      t_remark = #{tRemark,jdbcType=VARCHAR}
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+</mapper>

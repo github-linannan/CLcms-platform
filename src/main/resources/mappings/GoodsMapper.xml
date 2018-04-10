@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letu.healthplatform.platformmanage.goods.mapper.GoodsMapper">
+  
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.goods.model.Goods">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_shortname" jdbcType="VARCHAR" property="goodsShortname" />
+    <result column="goods_image_one" jdbcType="VARCHAR" property="goodsImageOne" />
+    <result column="goods_image_two" jdbcType="VARCHAR" property="goodsImageTwo" />
+    <result column="goods_image_three" jdbcType="VARCHAR" property="goodsImageThree" />
+    <result column="goods_image_four" jdbcType="VARCHAR" property="goodsImageFour" />
+    <result column="goods_image1_five" jdbcType="VARCHAR" property="goodsImage1Five" />
+    <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
+    <result column="goods_discount" jdbcType="REAL" property="goodsDiscount" />
+    <result column="goods_discount_price" jdbcType="DOUBLE" property="goodsDiscountPrice" />
+    <result column="goods_typeId" jdbcType="INTEGER" property="goodsTypeId" />
+    <result column="goods_counts" jdbcType="INTEGER" property="goodsCounts" />
+    <result column="goods_status" jdbcType="INTEGER" property="goodsStatus" />
+    
+  </resultMap>
+  
+  
+  <resultMap id="BaseResultVo" type="com.letu.healthplatform.platformmanage.goods.vo.GoodsInfoVo">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_shortname" jdbcType="VARCHAR" property="goodsShortname" />
+     <result column="goods_image_one" jdbcType="VARCHAR" property="goodsImageOne" />
+    <result column="goods_image_two" jdbcType="VARCHAR" property="goodsImageTwo" />
+    <result column="goods_image_three" jdbcType="VARCHAR" property="goodsImageThree" />
+    <result column="goods_image_four" jdbcType="VARCHAR" property="goodsImageFour" />
+    <result column="goods_image1_five" jdbcType="VARCHAR" property="goodsImage1Five" />
+    <result column="goods_price" jdbcType="DOUBLE" property="goodsPrice" />
+    <result column="goods_discount" jdbcType="REAL" property="goodsDiscount" />
+    <result column="goods_discount_price" jdbcType="DOUBLE" property="goodsDiscountPrice" />
+    <result column="goods_typeId" jdbcType="INTEGER" property="goodsTypeId" />
+    <result column="goods_counts" jdbcType="INTEGER" property="goodsCounts" />
+    <result column="goods_status" jdbcType="INTEGER" property="goodsStatus" />
+    <result column="goodsInfo_details" property="goodsinfoDetails" jdbcType="VARCHAR" />
+     <result column="goodstype_name" property="goodstypeName" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    	goods.goods_id,
+    	goods.goods_name,
+      	goods.goods_shortname,
+       	goods.goods_image_one,
+       	goods.goods_image_two, 
+        goods.goods_image_three, 
+        goods.goods_image_four,
+     	goods.goods_image1_five, 
+     	goods.goods_price, 
+     	goods.goods_discount,
+     	goods.goods_discount_price, 
+    	goods.goods_typeId,
+    	goods.goods_counts,
+     	goods.goods_status
+  </sql>
+  
+   <sql id="whereCondition">
+       where 1=1 
+       <if  test="goodsName!=null and goodsName!='' ">
+           and  goods.goods_name like concat('%', #{goodsName},'%') 
+       </if>
+       <if test="goodsTypeId !=null ">
+	       	  and goods.goods_typeId = #{goodsTypeId}
+	    </if>
+	    <if test="goodsStatus !=null ">
+	       	  and goods.goods_status = #{goodsStatus}
+	    </if>
+   </sql>
+  
+   <select id="selectByParam" parameterType="com.letu.healthplatform.platformmanage.goods.vo.GoodsInfoVo" resultMap="BaseResultVo">
+	   select 
+	     goods.goods_id,
+	    	goods.goods_name,
+	      	goods.goods_shortname,
+	       	goods.goods_image_one,
+	       	goods.goods_image_two, 
+	        goods.goods_image_three, 
+	        goods.goods_image_four,
+	     	goods.goods_image1_five, 
+	     	goods.goods_price, 
+	     	goods.goods_discount,
+	     	goods.goods_discount_price, 
+	    	goods.goods_typeId,
+	    	goods.goods_counts,
+	     	goods.goods_status,
+	     	goodsType.goodstype_name
+	     from t_goods goods
+	       left  join t_goods_type goodsType
+	       on goods.goods_typeId =  goodsType.goodstype_id
+	      <include refid="whereCondition"></include>
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultVo">
+	select
+	goods.goods_id,
+	goods.goods_name,
+	goods.goods_shortname,
+	goods.goods_price,
+	goods.goods_discount,
+	goods.goods_discount_price,
+	goods.goods_image_one,
+	goods.goods_image_two, 
+    goods.goods_image_three,
+    goods.goods_image_four,
+    goods.goods_image1_five,
+	goods.goods_typeId,
+	goods.goods_counts,
+	goods.goods_status ,
+	goods.goods_counts,
+	goodInfo.goodsInfo_details
+	from t_goods goods
+	left join t_goods_info goodInfo
+	on goods.goods_id =goodInfo.goods_id
+	where goods.goods_id = #{goodsId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    
+    delete from t_goods
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert"  useGeneratedKeys="true" keyProperty="goodsId" parameterType="com.letu.healthplatform.platformmanage.goods.model.Goods">
+    
+    insert into t_goods (goods_id, goods_name, goods_shortname, 
+      goods_image_one, goods_image_two, goods_image_three, 
+      goods_image_four, goods_image1_five, goods_price, 
+      goods_discount, goods_discount_price, goods_typeId, 
+      goods_counts)
+    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsShortname,jdbcType=VARCHAR}, 
+      #{goodsImageOne,jdbcType=VARCHAR}, #{goodsImageTwo,jdbcType=VARCHAR}, #{goodsImageThree,jdbcType=VARCHAR}, 
+      #{goodsImageFour,jdbcType=VARCHAR}, #{goodsImage1Five,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DOUBLE}, 
+      #{goodsDiscount,jdbcType=REAL}, #{goodsDiscountPrice,jdbcType=DOUBLE}, #{goodsTypeId,jdbcType=INTEGER}, 
+      #{goodsCounts,jdbcType=INTEGER})
+  </insert>
+  
+  
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="goodsId"
+      parameterType="com.letu.healthplatform.platformmanage.goods.model.Goods">
+    
+    insert into t_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsShortname != null">
+        goods_shortname,
+      </if>
+      <if test="goodsImageOne != null">
+        goods_image_one,
+      </if>
+      <if test="goodsImageTwo != null">
+        goods_image_two,
+      </if>
+      <if test="goodsImageThree != null">
+        goods_image_three,
+      </if>
+      <if test="goodsImageFour != null">
+        goods_image_four,
+      </if>
+      <if test="goodsImage1Five != null">
+        goods_image1_five,
+      </if>
+      <if test="goodsPrice != null">
+        goods_price,
+      </if>
+      <if test="goodsDiscount != null">
+        goods_discount,
+      </if>
+      <if test="goodsDiscountPrice != null">
+        goods_discount_price,
+      </if>
+      <if test="goodsTypeId != null">
+        goods_typeId,
+      </if>
+      <if test="goodsCounts != null">
+        goods_counts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsShortname != null">
+        #{goodsShortname,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageOne != null">
+        #{goodsImageOne,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageTwo != null">
+        #{goodsImageTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageThree != null">
+        #{goodsImageThree,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageFour != null">
+        #{goodsImageFour,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage1Five != null">
+        #{goodsImage1Five,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        #{goodsPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsDiscount != null">
+        #{goodsDiscount,jdbcType=REAL},
+      </if>
+      <if test="goodsDiscountPrice != null">
+        #{goodsDiscountPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsTypeId != null">
+        #{goodsTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCounts != null">
+        #{goodsCounts,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.letu.healthplatform.platformmanage.goods.model.Goods">
+    
+    update t_goods
+    <set>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsShortname != null">
+        goods_shortname = #{goodsShortname,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageOne != null">
+        goods_image_one = #{goodsImageOne,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageTwo != null">
+        goods_image_two = #{goodsImageTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageThree != null">
+        goods_image_three = #{goodsImageThree,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImageFour != null">
+        goods_image_four = #{goodsImageFour,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage1Five != null">
+        goods_image1_five = #{goodsImage1Five,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        goods_price = #{goodsPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsDiscount != null">
+        goods_discount = #{goodsDiscount,jdbcType=REAL},
+      </if>
+      <if test="goodsDiscountPrice != null">
+        goods_discount_price = #{goodsDiscountPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsTypeId != null">
+        goods_typeId = #{goodsTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCounts != null">
+        goods_counts = #{goodsCounts,jdbcType=INTEGER},
+      </if>
+      <if test="goodsStatus != null">
+        goods_status = #{goodsStatus,jdbcType=INTEGER},
+      </if>
+      
+    </set>
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.letu.healthplatform.platformmanage.goods.model.Goods">
+    update t_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_shortname = #{goodsShortname,jdbcType=VARCHAR},
+      goods_image_one = #{goodsImageOne,jdbcType=VARCHAR},
+      goods_image_two = #{goodsImageTwo,jdbcType=VARCHAR},
+      goods_image_three = #{goodsImageThree,jdbcType=VARCHAR},
+      goods_image_four = #{goodsImageFour,jdbcType=VARCHAR},
+      goods_image1_five = #{goodsImage1Five,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=DOUBLE},
+      goods_discount = #{goodsDiscount,jdbcType=REAL},
+      goods_discount_price = #{goodsDiscountPrice,jdbcType=DOUBLE},
+      goods_typeId = #{goodsTypeId,jdbcType=INTEGER},
+      goods_counts = #{goodsCounts,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 根据商品ids 加载所有商品信息 -->
+
+  <select id="selectGoodsByIds"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_goods   where goods_id in
+      <foreach item="item" index="index" collection="array" 
+                         open="(" separator="," close=")">
+                        #{item}
+                </foreach>
+     order by goods_id asc
+  </select>
+  
+  
+    <update id="updateGoodsStatus" parameterType="map">
+      update t_goods
+          set goods_status = #{goodsStatus,jdbcType=INTEGER}
+        where goods_id in
+        <foreach item="item" index="index" collection="list" 
+                 open="(" separator="," close=")">
+                #{item}
+        </foreach>
+  </update> 
+  
+  
+  
+</mapper>

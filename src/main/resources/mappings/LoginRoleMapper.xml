@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letu.healthplatform.platformmanage.sys.mapper.LoginRoleMapper" >
+ 
+  <resultMap id="BaseResultMap" type="com.letu.healthplatform.platformmanage.sys.model.LoginRole" >
+    <result column="t_login_id" property="tLoginId" jdbcType="INTEGER" />
+    <result column="t_role_id" property="tRoleId" jdbcType="INTEGER" />
+    <result column="crate_time" property="crateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_login_role
+    where t_login_id = #{tLoginId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    t_login_id,t_role_id
+    from t_login_role
+        where t_login_id = #{tLoginId,jdbcType=INTEGER}
+  </select>
+  
+  
+  <insert id="insert" parameterType="com.letu.healthplatform.platformmanage.sys.model.LoginRole" >
+    insert into t_login_role (t_login_id, t_role_id, crate_time
+      )
+    values (#{tLoginId,jdbcType=INTEGER}, #{tRoleId,jdbcType=INTEGER}, #{crateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.letu.healthplatform.platformmanage.sys.model.LoginRole" >
+    insert into t_login_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tLoginId != null" >
+        t_login_id,
+      </if>
+      <if test="tRoleId != null" >
+        t_role_id,
+      </if>
+      <if test="crateTime != null" >
+        crate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tLoginId != null" >
+        #{tLoginId,jdbcType=INTEGER},
+      </if>
+      <if test="tRoleId != null" >
+        #{tRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="crateTime != null" >
+        #{crateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  
+    <!-- 批量写入入库 -->
+   <insert id="insertLoginRoleBatch"  parameterType="java.util.List" >
+      <selectKey resultType ="java.lang.Integer" keyProperty= "orderInfoId"
+                 order= "AFTER">
+                SELECT LAST_INSERT_ID()
+            </selectKey >
+    insert into t_login_role ( t_login_id, t_role_id)
+    values 
+     <foreach collection ="list" item="loginRole" index= "index" separator =",">
+	    (#{loginRole.tLoginId,jdbcType=INTEGER}, #{loginRole.tRoleId,jdbcType=INTEGER})
+     </foreach >
+  </insert>
+  
+</mapper>
